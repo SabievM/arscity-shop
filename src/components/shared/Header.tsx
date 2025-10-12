@@ -35,15 +35,14 @@ const Header = () => {
     useClickOutside(ref, () => setOpen(false))
     const debounce = useDebounce(searchInput, 1000)
     const router = useRouter()
-    const ISINSERVER = typeof window === 'undefined'
+    const ISINSERVER = typeof window === "undefined"
     const isAuth = useMemo(() => {
         if (ISINSERVER) return
-        return !!localStorage.getItem('access_token')
-    }, []);
-    
+        return !!localStorage.getItem("access_token")
+    }, [])
 
     const [isLogged, setIsLogged] = useState(false)
-    
+
     useEffect(() => {
         if (ISINSERVER) return
         const token = localStorage.getItem("access_token")
@@ -61,8 +60,8 @@ const Header = () => {
     useEffect(() => {
         fetchCart()
     }, [fetchCart])
-    console.log(searchInput);
-    
+    console.log(searchInput)
+
     return (
         <header className="flex flex-col-reverse lg:flex lg:flex-row lg:relative lg:justify-between lg:max-w-screen lg:w-[1370px] lg:h-[240px] lg:mx-auto bg-white lg:px-10 lg:mt-8 z-30">
             <div className="lg:flex lg:flex-col lg:max-w-[803px] lg:gap-10 lg:relative">
@@ -98,7 +97,7 @@ const Header = () => {
                         />
                         City
                     </Link>
-                    <span className="relative  inline-block lg:w-[300px] after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
+                    <span className="relative md:hidden inline-block lg:w-[300px] after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
                         керамическая плитка и керамогранит в Чеченсокй
                         Республике
                     </span>
@@ -112,7 +111,9 @@ const Header = () => {
                         >
                             <Heart className="hover:scale-125 duration-150 cursor-pointer" />
                             <span className="absolute text-red-500 -top-4 -right-2">
-                                {isAuth ? favorites.length : localFavorites.length}
+                                {isAuth
+                                    ? favorites.length
+                                    : localFavorites.length}
                             </span>
                         </Link>
                         <Link
@@ -170,14 +171,21 @@ const Header = () => {
                             +7 999 001-94-94
                         </Link>
                         <span className="hidden lg:flex lg:flex-row lg:gap-3 lg:relative after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 cursor-pointer">
-                            <Link target="blank" href="https://yandex.ru/maps/20699/urus-martan/?ll=45.557530%2C43.142918&mode=routes&rtext=~43.142918%2C45.557530&rtt=auto&ruri=~&z=17">г. Урус-Мартан, ул. Нурдина Усамова 34</Link>
+                            <Link
+                                target="blank"
+                                href="https://yandex.ru/maps/20699/urus-martan/?ll=45.557530%2C43.142918&mode=routes&rtext=~43.142918%2C45.557530&rtt=auto&ruri=~&z=17"
+                            >
+                                г. Урус-Мартан, ул. Нурдина Усамова 34
+                            </Link>
                         </span>
                     </div>
 
-                    <Link href="https://www.instagram.com/baza_ars_siti?igsh=cWZ5d2lvOXYzanN1" target="blank">
+                    <Link
+                        href="https://www.instagram.com/baza_ars_siti?igsh=cWZ5d2lvOXYzanN1"
+                        target="blank"
+                    >
                         <Instagram />
                     </Link>
-                    
                 </div>
                 <div className="relative px-4 lg:px-0">
                     <input
@@ -191,7 +199,7 @@ const Header = () => {
                             }
                         }}
                     />
-                    <ArrowRight 
+                    <ArrowRight
                         onClick={() => setSearchInput(searchInput)}
                         className="absolute top-[30%] w-[20px] h-[20px] right-6 lg:right-[20px] cursor-pointer"
                         color="black"
