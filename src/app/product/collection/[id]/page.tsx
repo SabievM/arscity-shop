@@ -1,8 +1,5 @@
 "use client"
-import {
-    ArrowLeft,
-    ArrowRight
-} from "lucide-react"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import axios from "axios"
@@ -18,16 +15,17 @@ const CollectionPage = () => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const [typeTiles, setTypeTiles] = useState("all")
     const [collection, setCollection] = useState<CatalogType | null>(null)
-    const [tilesForCollection, setTilesForCollection] = useState<TileTypes[]>([])
+    const [tilesForCollection, setTilesForCollection] = useState<TileTypes[]>(
+        []
+    )
     const [indexCollection, setIndexCollection] = useState(0)
-    const { addFavorite, removeFavorite, favorites, localFavorites } = useFavorites()
+    const { addFavorite, removeFavorite, favorites, localFavorites } =
+        useFavorites()
     const ISSERVER = typeof window === "undefined"
     const isAuthenticated = useMemo(() => {
         if (ISSERVER) return
-        return !!localStorage.getItem('access_token')
-    }, []);
-        
-    
+        return !!localStorage.getItem("access_token")
+    }, [])
 
     useEffect(() => {
         const id = window.location.pathname.split("/").pop()
@@ -55,31 +53,42 @@ const CollectionPage = () => {
         fetchTilesForCollection()
     }, [collection])
 
+    const isInFavorites =
+        favorites.some(
+            (fav) =>
+                fav.object_id === collection?.id &&
+                fav.content_type_display === collection?.type
+        ) ||
+        localFavorites.some(
+            (item) =>
+                item.id === collection?.id && item.type === collection?.type
+        )
+    console.log(collection)
 
-
-
-    
-    const isInFavorites = favorites.some(fav => fav.object_id === collection?.id && fav.content_type_display === collection?.type) || localFavorites.some(item => item.id === collection?.id && item.type === collection?.type);
-    console.log(collection);
-    
     const handleFavoriteToggle = () => {
-        const selectedFavorites = favorites.filter(item => item.object_id === collection?.id && item.content_type_display === collection?.type);
-        const selectedFavoritesLocalStorage = localFavorites.filter(item => item.id === collection?.id && item.type === collection?.type);
-        
+        const selectedFavorites = favorites.filter(
+            (item) =>
+                item.object_id === collection?.id &&
+                item.content_type_display === collection?.type
+        )
+        const selectedFavoritesLocalStorage = localFavorites.filter(
+            (item) =>
+                item.id === collection?.id && item.type === collection?.type
+        )
+
         if (isInFavorites) {
             if (isAuthenticated) {
-                removeFavorite(selectedFavorites[0]);
+                removeFavorite(selectedFavorites[0])
             } else {
-                removeFavorite(selectedFavoritesLocalStorage[0]);
+                removeFavorite(selectedFavoritesLocalStorage[0])
             }
         } else {
-            addFavorite(collection);
+            addFavorite(collection)
         }
-    };
+    }
 
+    console.log(collection)
 
-    console.log(collection);
-    
     const scrollLeft = () => {
         if (scrollRef.current) {
             scrollRef.current.scrollBy({ left: -150, behavior: "smooth" })
@@ -92,19 +101,23 @@ const CollectionPage = () => {
     }
 
     const imagesArr = useMemo(() => {
-        if(!collection) {
-            return Array(5).fill('');
+        if (!collection) {
+            return Array(5).fill("")
         }
-        return [ collection.image1, collection.image2, collection.image3, collection.image4, collection.image5 ];
-
+        return [
+            collection.image1,
+            collection.image2,
+            collection.image3,
+            collection.image4,
+            collection.image5,
+        ]
     }, [collection?.id, !!collection])
 
     if (!collection) return null
 
-
     return (
         <div className="flex flex-col gap-4 md:gap-0">
-            <Breadcrumbs 
+            <Breadcrumbs
                 name={"Коллекция"}
                 title={`Коллекция ${collection.name}`}
                 handleFavoriteToggle={handleFavoriteToggle}
@@ -113,16 +126,13 @@ const CollectionPage = () => {
                 url="/products/collections"
             />
 
-            <div className="flex flex-col justify-between w-screen md:w-[1370px] gap-10 mx-auto px-10 md:px-12">
-                <div className="flex flex-col md:flex-row justify-between md:items-start">
-                    <div className="relative flex flex-col md:w-[666px]">
-                        <div
-                            className={`md:h-[481px] overflow-hidden transition-opacity duration-300`}
-                        >
+            <div className="flex flex-col justify-between w-screen md:max-w-screen lg:w-[1370px] mx-auto mt-10 px-12 pt-5">
+                <div className="flex flex-col gap-6 md:justify-between md:items-start product-detail">
+                    <div className="relative mt-5 md:mt-0 flex flex-col w-[100%] items-center bg-[#F6F6F6]">
+                        <div className="relative flex overflow-hidden justify-center h-[580px] w-[100%] product-detail_image">
                             <Image
                                 src={imagesArr[indexCollection]}
-                                width={666}
-                                height={480}
+                                fill
                                 alt="ImageTile"
                             />
                         </div>
@@ -142,31 +152,31 @@ const CollectionPage = () => {
                                     {Array(5)
                                         .fill("")
                                         .map((_, index) => {
-                                            if(!imagesArr[indexCollection]) return;
-                                            return <div
-                                                key={index}
-                                                onClick={() =>
-                                                    setIndexCollection(
-                                                        index
-                                                    )
-                                                }
-                                                className={`relative flex items-center justify-between w-[130px] h-[103px] ${
-                                                    index + 1 !==
-                                                    indexCollection
-                                                        ? "bg-gray-300"
-                                                        : ""
-                                                }`}
-                                            >
-                                                <Image
-                                                    fill
-                                                    src={
-                                                        imagesArr[index]
+                                            if (!imagesArr[indexCollection])
+                                                return
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    onClick={() =>
+                                                        setIndexCollection(
+                                                            index
+                                                        )
                                                     }
-                                                    alt="imageSlide"
-                                                />
-                                            </div>
-                                        })
-                                    }
+                                                    className={`relative flex items-center justify-between w-[130px] h-[103px] ${
+                                                        index + 1 !==
+                                                        indexCollection
+                                                            ? "bg-gray-300"
+                                                            : ""
+                                                    }`}
+                                                >
+                                                    <Image
+                                                        fill
+                                                        src={imagesArr[index]}
+                                                        alt="imageSlide"
+                                                    />
+                                                </div>
+                                            )
+                                        })}
                                 </div>
                             </div>
                             <button
@@ -253,27 +263,87 @@ const CollectionPage = () => {
                 </div>
             </div>
             <Services />
-            <div className="md:w-[1370px] z-50 mx-auto px-12 flex flex-col mt-10 mb-10">
+            <div className="w-screen md:max-w-screen lg:w-[1370px] z-50 mx-auto px-12 flex flex-col mt-10 mb-10">
                 <div className="flex flex-col md:flex-row gap-2 md:gap-5 text-[1rem] md:text-2xl uppercase">
-                    <span className={`cursor-pointer relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 ${typeTiles === "all" ? "text-red-500" : ""}`} onClick={() => setTypeTiles("all")}>все элементы</span>
-                    <span className={`cursor-pointer relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 ${typeTiles === "base" ? "text-red-500" : ""}`} onClick={() => setTypeTiles("base")}>базовая плитка ({tilesForCollection.filter(item => item.tile_type === 'base').length})</span>
-                    <span className={`cursor-pointer relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 ${typeTiles === "border" ? "text-red-500" : ""}`} onClick={() => setTypeTiles("border")}>Бордюр ({tilesForCollection.filter(item => item.tile_type === 'border').length})</span>
-                    <span className={`cursor-pointer relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 ${typeTiles === "floor" ? "text-red-500" : ""}`} onClick={() => setTypeTiles("floor")}>напольная плитка ({tilesForCollection.filter(item => item.tile_type === 'floor').length})</span>
+                    <span
+                        className={`cursor-pointer relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 ${
+                            typeTiles === "all" ? "text-red-500" : ""
+                        }`}
+                        onClick={() => setTypeTiles("all")}
+                    >
+                        все элементы
+                    </span>
+                    <span
+                        className={`cursor-pointer relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 ${
+                            typeTiles === "base" ? "text-red-500" : ""
+                        }`}
+                        onClick={() => setTypeTiles("base")}
+                    >
+                        базовая плитка (
+                        {
+                            tilesForCollection.filter(
+                                (item) => item.tile_type === "base"
+                            ).length
+                        }
+                        )
+                    </span>
+                    <span
+                        className={`cursor-pointer relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 ${
+                            typeTiles === "border" ? "text-red-500" : ""
+                        }`}
+                        onClick={() => setTypeTiles("border")}
+                    >
+                        Бордюр (
+                        {
+                            tilesForCollection.filter(
+                                (item) => item.tile_type === "border"
+                            ).length
+                        }
+                        )
+                    </span>
+                    <span
+                        className={`cursor-pointer relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 ${
+                            typeTiles === "floor" ? "text-red-500" : ""
+                        }`}
+                        onClick={() => setTypeTiles("floor")}
+                    >
+                        напольная плитка (
+                        {
+                            tilesForCollection.filter(
+                                (item) => item.tile_type === "floor"
+                            ).length
+                        }
+                        )
+                    </span>
                 </div>
                 <div className="flex flex-wrap gap-3 mt-10 mb-10">
-                    {typeTiles === "all" ? (
-                        tilesForCollection.map((tile) => (
-                            <Product key={tile.id} city={tile.country} imageURL={tile.image1 || ""} title={tile.name} price={tile.price} content_type={tile.content_type} id={tile.id} />
-                        ))
-                    ) : (
-                        tilesForCollection.filter(item => item.tile_type === typeTiles).map((tile) => (
-                            <Product key={tile.id} city={tile.country} imageURL={tile.image1 || ""} title={tile.name} price={tile.price} content_type={tile.content_type} id={tile.id} />
-                        ))
-                    )}
+                    {typeTiles === "all"
+                        ? tilesForCollection.map((tile) => (
+                              <Product
+                                  key={tile.id}
+                                  city={tile.country}
+                                  imageURL={tile.image1 || ""}
+                                  title={tile.name}
+                                  price={tile.price}
+                                  content_type={tile.content_type}
+                                  id={tile.id}
+                              />
+                          ))
+                        : tilesForCollection
+                              .filter((item) => item.tile_type === typeTiles)
+                              .map((tile) => (
+                                  <Product
+                                      key={tile.id}
+                                      city={tile.country}
+                                      imageURL={tile.image1 || ""}
+                                      title={tile.name}
+                                      price={tile.price}
+                                      content_type={tile.content_type}
+                                      id={tile.id}
+                                  />
+                              ))}
                 </div>
-                
             </div>
-
         </div>
     )
 }
