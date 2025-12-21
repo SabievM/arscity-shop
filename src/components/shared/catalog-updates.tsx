@@ -1,7 +1,7 @@
 "use client"
 import config from "@/utils/config"
 import axios from "axios"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Sparkles } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import React, { useEffect, useRef, useState } from "react"
@@ -34,7 +34,6 @@ export type CatalogType = {
 
 const CatalogUpdates = () => {
     const popularProductRef = useRef<HTMLDivElement | null>(null)
-
     const [collectionNew, setCollectionNew] = useState<CatalogType[]>([])
 
     useEffect(() => {
@@ -73,80 +72,134 @@ const CatalogUpdates = () => {
     }, [])
 
     if (collectionNew.length === 0) return null
+
     return (
-        <div
+        <section
             ref={popularProductRef}
             id="new-collection"
-            className="lg:w-[1370px] md:max-w-[100vw] mx-auto px-10 mb-28 flex flex-col gap-5"
+            className="py-20 bg-gradient-to-b from-white to-gray-50"
         >
-            <div className="flex items-center justify-between">
-                <h2 className='text-[16px] lg:text-2xl font-bold relative inline-block after:content-[""] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 cursor-pointer uppercase'>
-                    Новинки в коллекции
-                </h2>
-                <div className="group flex items-center gap-5 text-black lg:text-2xl cursor-pointer">
+            <div className="container-main">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <div className="flex items-center gap-2 mb-3">
+                            <Sparkles
+                                className="text-red-500"
+                                size={20}
+                            />
+                            <span className="text-red-500 font-semibold text-sm uppercase tracking-wider">
+                                Новые поступления
+                            </span>
+                        </div>
+                        <h2 className="section-title text-3xl md:text-4xl">
+                            Новинки в коллекции
+                        </h2>
+                    </div>
                     <Link
                         href="/products/collections"
-                        className='relative inline-block after:content-[""] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 uppercase'
+                        className="group flex items-center gap-3 mt-6 md:mt-0"
                     >
-                        Все коллекции
-                    </Link>
-                    <button className="group-hover:scale-125 duration-200 w-[40px] h-[40px] rounded-[50%] bg-red-600 flex items-center justify-center cursor-pointer hover:scale-[1.1] transition-all delay-100">
-                        <ArrowRight
-                            color="white"
-                            size={20}
-                        />
-                    </button>
-                </div>
-            </div>
-            <div className="flex flex-col lg:flex-row items-center lg:justify-between lg:h-[520px] gap-4">
-                <div className="flex items-center justify-between md:w-screen md:px-8 gap-4 flex-col lg:flex-[40%] h-[100%]">
-                    {collectionNew.slice(0, 2).map((collection) => (
-                        <div
-                            key={collection.id}
-                            className="h-[50%] w-[100%] relative cursor-pointer hover:scale-[1.02] transition-all duration-200"
-                        >
-                            <Image
-                                style={{ minWidth: "100%", height: "100%" }}
-                                width={300}
-                                height={400}
-                                src={collection.image1}
-                                alt="image"
-                                className="object-cover"
+                        <span className="link-underline text-gray-600 font-medium pb-1">
+                            Все коллекции
+                        </span>
+                        <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center group-hover:bg-red-600 group-hover:scale-110 transition-all duration-300">
+                            <ArrowRight
+                                size={18}
+                                className="text-white"
                             />
-                            <Link href={`/product/collection/${collection.id}`}>
-                                <div className="absolute top-[10%] md:bg-gray-300/50 md:text-2xl lg:top-[30%] lg:left-4 bg-gray-400/50 text-white p-5">
-                                    <p>Новая эксклюзивная коллекция</p>
-                                    <h2 className="text-2xl text-red-500 md:text-3xl font-bold opacity-[1]">
-                                        {collection.name}
-                                    </h2>
-                                    <span>{collection.country}</span>
-                                </div>
-                            </Link>
                         </div>
-                    ))}
+                    </Link>
                 </div>
 
-                <div className="w-[300px] h-[150px] md:w-[100%] md:h-[400px] lg:flex-[60%] lg:h-[100%] relative cursor-pointer">
-                    <Link href={`/product/collection/${collectionNew[1].id}`}>
-                        <div className="w-[100%] h-[100%] hover:scale-[1.02] transition-all duration-200">
-                            <Image
-                                fill
-                                src={collectionNew[1].image1}
-                                alt="image"
-                                className="object-cover"
-                            />
-                            <div className="absolute top-[10%] md:bg-gray-300/50 md:text-2xl lg:top-[30%] lg:left-4 bg-gray-400/50 text-white p-5">
-                                <p>Новая эксклюзивная коллекция</p>
-                                <h2 className="text-2xl text-red-500 md:text-3xl font-bold opacity-[1]">
-                                    {collectionNew[1].name}
-                                </h2>
-                                <span>{collectionNew[1].country}</span>
+                {/* Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-auto lg:h-[600px]">
+                    {/* Left column - 2 smaller cards */}
+                    <div className="lg:col-span-1 flex flex-col gap-6">
+                        {collectionNew.slice(0, 2).map((collection) => (
+                            <Link
+                                key={collection.id}
+                                href={`/product/collection/${collection.id}`}
+                                className="group relative flex-1 min-h-[280px] rounded-2xl overflow-hidden card-hover"
+                            >
+                                <Image
+                                    fill
+                                    src={collection.image1}
+                                    alt={collection.name}
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                                {/* Badge */}
+                                <div className="absolute top-4 left-4">
+                                    <span className="badge badge-primary">
+                                        <Sparkles
+                                            size={12}
+                                            className="mr-1"
+                                        />
+                                        Новинка
+                                    </span>
+                                </div>
+
+                                {/* Content */}
+                                <div className="absolute bottom-0 left-0 right-0 p-6">
+                                    <p className="text-gray-300 text-sm mb-1">
+                                        Эксклюзивная коллекция
+                                    </p>
+                                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-red-400 transition-colors">
+                                        {collection.name}
+                                    </h3>
+                                    <span className="text-gray-400 text-sm flex items-center gap-1">
+                                        📍 {collection.country}
+                                    </span>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+
+                    {/* Right column - 1 large card */}
+                    <Link
+                        href={`/product/collection/${collectionNew[1]?.id}`}
+                        className="group lg:col-span-2 relative min-h-[400px] lg:h-full rounded-2xl overflow-hidden card-hover"
+                    >
+                        <Image
+                            fill
+                            src={collectionNew[1]?.image1}
+                            alt={collectionNew[1]?.name || "Collection"}
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
+                        {/* Badge */}
+                        <div className="absolute top-6 left-6">
+                            <span className="px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded-full flex items-center gap-2">
+                                <Sparkles size={14} />
+                                Топ коллекция
+                            </span>
+                        </div>
+
+                        {/* Content */}
+                        <div className="absolute bottom-0 left-0 right-0 p-8">
+                            <p className="text-gray-300 text-lg mb-2">
+                                Эксклюзивная коллекция
+                            </p>
+                            <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-red-400 transition-colors">
+                                {collectionNew[1]?.name}
+                            </h3>
+                            <div className="flex items-center gap-4">
+                                <span className="text-gray-400 flex items-center gap-2">
+                                    📍 {collectionNew[1]?.country}
+                                </span>
+                                <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm font-medium group-hover:bg-red-500 transition-colors">
+                                    Смотреть коллекцию →
+                                </span>
                             </div>
                         </div>
                     </Link>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 

@@ -53,7 +53,7 @@ const Products = () => {
         <div className="flex gap-5 w-screen md:max-w-screen lg:w-[1370px] mx-auto mt-10 px-12 pt-5">
             <button
                 onClick={() => setFilterShow(!filterShow)}
-                className="absolute md:hidden top-98 left-12 border px-5 py-2 bg-red-500 text-white"
+                className="absolute md:hidden top-98 left-12 border px-5 py-2 bg-red-600 text-white rounded-xl"
             >
                 показать фильтры
             </button>
@@ -81,7 +81,7 @@ const Products = () => {
             </div>
 
             <div className="flex flex-col gap-4">
-                <h2 className="text-3xl uppercase font-bold w-[100%]">
+                <h2 className="text-3xl uppercase font-bold w-[100%] mb-30 md:mb-5">
                     Керамическая плитка и керамогранит
                 </h2>
                 <div className="flex flex-wrap gap-4">

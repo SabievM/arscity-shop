@@ -28,47 +28,61 @@ const GallaeryWorks = () => {
             console.log(error)
         }
     }, [])
+    useEffect(() => {
+        document.body.style.overflow = openModal ? "hidden" : "auto"
+    }, [openModal])
+
     const getImage = (image: string) => {
         setOpenModal(true)
         setCurrentImage(image)
     }
 
     return (
-        <div className="relative w-screen md:max-w-screen h-screen lg:w-[1370px] mx-auto mt-20 px1-2 pt-5 gallery z-[10000]">
-            <h1></h1>
-            {collectionNew.map((item) => (
+        <>
+            <div className="relative lg:w-[1370px] mx-auto mt-5 md:mt-20 px-2 pt-5 z-[1]">
+                <h1 className="text-3xl font-bold mb-5">
+                    Галерея наших работ и готовых решений
+                </h1>
+
+                {/* ВАЖНО: gallery ТОЛЬКО ЗДЕСЬ */}
+                <div className="gallery">
+                    {collectionNew.map((item) => (
+                        <div
+                            key={item.id}
+                            className="pictures"
+                            onClick={() => getImage(item.image)}
+                        >
+                            <img
+                                src={item.image}
+                                alt="img"
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {openModal && (
                 <div
-                    key={item.id}
-                    className="pictures"
-                    onClick={() => getImage(item.image)}
+                    className={` ${
+                        openModal
+                            ? "galleryModalImage openGalleryImage"
+                            : "galleryModalImage"
+                    }`}
                 >
                     <img
-                        src={item.image}
-                        alt="img"
-                        style={{ width: "100%" }}
+                        src={currentImage}
+                        alt="image"
+                        className="w-auto max-w-[100%] h-auto max-h-[100%] block px-0 py-5 m-auto"
+                    />
+                    <X
+                        className="absolute right-10 top-10 cursor-pointer"
+                        width={52}
+                        height={52}
+                        onClick={() => setOpenModal(false)}
                     />
                 </div>
-            ))}
-            <div
-                className={`${
-                    openModal
-                        ? "galleryModalImage openGalleryImage"
-                        : "galleryModalImage"
-                }`}
-            >
-                <img
-                    src={currentImage}
-                    alt="image"
-                    className="w-auto max-w-[100%] h-auto max-h-[100%] block px-0 py-5 m-auto"
-                />
-                <X
-                    className="absolute right-10 top-10 cursor-pointer"
-                    width={52}
-                    height={52}
-                    onClick={() => setOpenModal(false)}
-                />
-            </div>
-        </div>
+            )}
+        </>
     )
 }
 

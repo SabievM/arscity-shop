@@ -1,7 +1,6 @@
 "use client"
 import React, { useRef, useState } from "react"
-import Button from "../ui/Button"
-import { ArrowUp, Instagram, Menu, PhoneCall } from "lucide-react"
+import { ArrowUp, Instagram, MapPin, PhoneCall, Clock } from "lucide-react"
 import Image from "next/image"
 import useClickOutside from "@/hooks/use-click-outside"
 import CatalogModal from "./catalog-modal"
@@ -13,147 +12,214 @@ const Footer = () => {
     const ref = useRef<HTMLDivElement | null>(null)
 
     useClickOutside(ref, () => setOpen(false))
+
+    const quickLinks = [
+        { href: "/logistics", label: "Оплата и доставка" },
+        { href: "/#new-collection", label: "Новинки в коллекции" },
+        { href: "/completed-work", label: "Примеры работ" },
+        { href: "/advice", label: "Полезные советы" },
+        { href: "/#aboutref", label: "О нас" },
+    ]
+
+    const services = [
+        "Выезд на замер",
+        "Расчет материалов",
+        "Резка плитки",
+        "Изготовление спец.изделий",
+        "3D-проект (дизайн)",
+    ]
+
     return (
-        <div className="md:max-w-screen lg:w-[1370px] h-[320px] mx-auto mt-10 px-12 pt-10 md:mt-30 flex flex-col gap-10 md:flex-col lg:flex-row justify-between md:border-t-2 pb-4">
-            <div
-                ref={ref}
-                className="flex flex-col justify-between relative"
-            >
-                <Button
-                    onClick={() => setOpen(!open)}
-                    backgroundColor="bg-red-600"
-                    colorText="text-white"
-                    className="hover:scale-110 hidden md:flex md:px-4 duration-150 z-[1000] -mt-20 cursor-pointer"
-                    text="КАТАЛОГ ПРОДУКЦИИ"
-                    icon={<Menu />}
-                />
+        <footer className="bg-slate-900 text-white mt-10">
+            {/* Main footer */}
+            <div className="container-main py-16 pt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 pt-10">
+                    {/* Brand column */}
+                    <div className="lg:col-span-1">
+                        <Link
+                            href="/"
+                            className="inline-flex items-center gap-1 mb-6"
+                        >
+                            <span className="text-3xl font-bold">Ars</span>
+                            <Image
+                                src={logo}
+                                width={50}
+                                height={50}
+                                alt="logo"
+                                className="brightness-0 invert"
+                            />
+                            <span className="text-3xl font-bold">City</span>
+                        </Link>
+
+                        <p className="text-gray-400 mb-6 leading-relaxed">
+                            Керамическая плитка и керамогранит в Чеченской
+                            республике. Более 570 коллекций от лучших
+                            производителей.
+                        </p>
+
+                        {/* Social links */}
+                        <div className="flex items-center gap-3">
+                            <Link
+                                href="https://www.instagram.com/baza_ars_siti?igsh=cWZ5d2lvOXYzanN1"
+                                target="_blank"
+                                className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-red-500 transition-colors"
+                            >
+                                <Instagram size={20} />
+                            </Link>
+                            <Link
+                                href="https://wa.me/79990019494"
+                                target="_blank"
+                                className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-green-500 transition-colors"
+                            >
+                                <PhoneCall size={20} />
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Quick links */}
+                    <div>
+                        <h3 className="text-lg font-semibold mb-6">
+                            Интернет-магазин
+                        </h3>
+                        <ul className="space-y-3">
+                            {quickLinks.map((link) => (
+                                <li key={link.href}>
+                                    <Link
+                                        href={link.href}
+                                        className="text-gray-400 hover:text-white transition-colors inline-block"
+                                    >
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Services */}
+                    <div>
+                        <h3 className="text-lg font-semibold mb-6">
+                            Услуги компании
+                        </h3>
+                        <ul className="space-y-3">
+                            {services.map((service, index) => (
+                                <li key={index}>
+                                    <span className="text-gray-400 hover:text-white transition-colors cursor-pointer inline-block">
+                                        {service}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Contact info */}
+                    <div>
+                        <h3 className="text-lg font-semibold mb-6">Контакты</h3>
+                        <div className="space-y-4">
+                            <Link
+                                href="https://wa.me/79990019494"
+                                target="_blank"
+                                className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors"
+                            >
+                                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+                                    <PhoneCall size={18} />
+                                </div>
+                                <span>+7 999 001-94-94</span>
+                            </Link>
+
+                            <Link
+                                href="https://yandex.ru/maps/20699/urus-martan/?ll=45.557530%2C43.142918"
+                                target="_blank"
+                                className="flex items-start gap-3 text-gray-400 hover:text-white transition-colors"
+                            >
+                                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+                                    <MapPin size={18} />
+                                </div>
+                                <span className="text-sm leading-relaxed">
+                                    г. Урус-Мартан,
+                                    <br />
+                                    ул. Нурдина Усамова 34
+                                </span>
+                            </Link>
+
+                            <div className="flex items-center gap-3 text-gray-400">
+                                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+                                    <Clock size={18} />
+                                </div>
+                                <span>Пн-Сб: 9:00 - 18:00</span>
+                            </div>
+                        </div>
+
+                        {/* Payment icons */}
+                        <div className="flex items-center gap-4 mt-6 pt-6 border-t border-white/10">
+                            <Image
+                                src="/iconCard3.png"
+                                width={50}
+                                height={20}
+                                alt="Visa"
+                                className="opacity-60 hover:opacity-100 transition-opacity"
+                            />
+                            <Image
+                                src="/iconCard2.png"
+                                width={45}
+                                height={28}
+                                alt="Mastercard"
+                                className="opacity-60 hover:opacity-100 transition-opacity"
+                            />
+                            <Image
+                                src="/iconCard1.png"
+                                width={55}
+                                height={20}
+                                alt="Mir"
+                                className="opacity-60 hover:opacity-100 transition-opacity"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Bottom bar */}
+            <div className="border-t border-white/10">
+                <div className="container-main py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p className="text-gray-500 text-sm">
+                        © {new Date().getFullYear()} ArsCity. Все права
+                        защищены.
+                    </p>
+
+                    <div className="flex items-center gap-4">
+                        <Link
+                            href="/legal-information"
+                            className="text-gray-500 hover:text-white text-sm transition-colors"
+                        >
+                            Политика конфиденциальности
+                        </Link>
+                        <Link
+                            href="/personal-data"
+                            className="text-gray-500 hover:text-white text-sm transition-colors"
+                        >
+                            Персональные данные
+                        </Link>
+                    </div>
+
+                    {/* Scroll to top */}
+                    <button
+                        onClick={() =>
+                            window.scrollTo({ top: 0, behavior: "smooth" })
+                        }
+                        className="w-12 h-12 rounded-xl bg-red-500 hover:bg-red-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
+                    >
+                        <ArrowUp size={20} />
+                    </button>
+                </div>
+            </div>
+
+            {/* Catalog modal */}
+            <div ref={ref}>
                 <CatalogModal
                     open={open}
                     setOpen={setOpen}
                 />
-                <Link
-                    href="/"
-                    className="group text-4xl font-bold flex items-center rounded-2xl p-2"
-                >
-                    Ars
-                    <Image
-                        className="group-hover:translate-y-[-12px] group-hover:scale-110 transition-all duration-300"
-                        src={logo}
-                        width={80}
-                        height={80}
-                        alt="logo"
-                    />
-                    City
-                </Link>
-                <span className="text-gray-500 cursor-default hover:text-red-500 transition-all delay-100">
-                    керамическая плитка и керамогранит <br /> в Чеченской
-                    республике
-                </span>
-                <div className="flex gap-4 items-center cursor-pointer hover:text-red-500 transition-all delay-100">
-                    <Link
-                        href="https://www.instagram.com/baza_ars_siti?igsh=cWZ5d2lvOXYzanN1"
-                        className="text-[1.5rem] font-bold flex items-center rounded-2xl p-2"
-                    >
-                        Ars
-                        <Image
-                            src={logo}
-                            width={40}
-                            height={40}
-                            alt="logo"
-                        />
-                        City
-                    </Link>
-                    <Instagram />
-                </div>
             </div>
-            <div className="flex flex-col gap-6">
-                <h2 className="text-2xl cursor-default hover:text-red-500 transition-all delay-100">
-                    интернет-магазин
-                </h2>
-                <div className="flex flex-col gap-3 text-gray-700">
-                    <ul className="flex flex-col md:flex-row lg:flex-col flex-wrap gap-5 lg:justify-between">
-                        <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                            <Link href="/logistics">Оплата и доставка</Link>
-                        </li>
-                        <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                            <Link href="/#new-collection">
-                                Новинки в коллекции
-                            </Link>
-                        </li>
-                        <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                            <Link href="/completed-work">Примеры работ</Link>
-                        </li>
-                        <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                            <Link href="/advice">Полезные советы</Link>
-                        </li>
-                        <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                            <Link href="/#aboutref">О нас</Link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div className="flex flex-col gap-6">
-                <h2 className="text-2xl cursor-default hover:text-red-500 transition-all delay-100">
-                    услуги компании
-                </h2>
-                <div className="flex flex-col gap-3 md:flex-row lg:flex-col flex-wrap text-gray-700">
-                    <span className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 cursor-pointer">
-                        Выезд на замер
-                    </span>
-                    <span className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 cursor-pointer">
-                        Расчет материалов
-                    </span>
-                    <span className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 cursor-pointer">
-                        Резка
-                    </span>
-                    <span className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 cursor-pointer">
-                        Изготовление спец.изделий
-                    </span>
-                    <span className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 cursor-pointer">
-                        3D-проект (дизайн)
-                    </span>
-                </div>
-            </div>
-            <div className="flex flex-col gap-3 md:justify-between h-[100%]">
-                <div className="flex gap-4 relative after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 cursor-pointer">
-                    <PhoneCall />
-                    <Link href="https://wa.me/79990019494">
-                        <span>+7 999 001-94-94</span>
-                    </Link>
-                </div>
-                <div className="flex justify-between md:gap-10">
-                    <Image
-                        src="/iconCard3.png"
-                        width={60}
-                        height={19}
-                        alt="iconcard"
-                        objectFit="cover"
-                    />
-                    <Image
-                        src="/iconCard2.png"
-                        width={52}
-                        height={31}
-                        alt="iconcard"
-                    />
-                    <Image
-                        src="/iconCard1.png"
-                        width={66}
-                        height={19}
-                        alt="iconcard"
-                    />
-                </div>
-                <Button
-                    backgroundColor="bg-gray-400"
-                    colorText="text-white"
-                    className="hover:scale-110 hover:bg-red-500 duration-150 z-[1000] uppercase md:w-[250px] h-[65px] cursor-pointer"
-                    text="Наверх страницы"
-                    icon={<ArrowUp />}
-                    onClick={() => {
-                        scrollTo(0, 0)
-                    }}
-                />
-            </div>
-        </div>
+        </footer>
     )
 }
 

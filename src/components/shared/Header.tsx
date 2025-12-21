@@ -1,18 +1,17 @@
 "use client"
 import {
-    ArrowRight,
     Heart,
     Instagram,
     Menu,
-    MenuIcon,
     PhoneCall,
+    Search,
     ShoppingCart,
     User,
     X,
+    MapPin,
 } from "lucide-react"
 import Link from "next/link"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import Button from "@/components/ui/Button"
 import CatalogModal from "./catalog-modal"
 import useClickOutside from "@/hooks/use-click-outside"
 import logo from "../../../public/log.svg"
@@ -27,6 +26,7 @@ const Header = () => {
     const [open, setOpen] = useState(false)
     const [searchInput, setSearchInput] = useState("")
     const [showMenu, setShowMenu] = useState(false)
+    const [isScrolled, setIsScrolled] = useState(false)
     const ref = useRef<HTMLDivElement | null>(null)
     const { cartList, localCart } = useCartStore()
     const { favorites, localFavorites } = useFavorites()
@@ -42,6 +42,14 @@ const Header = () => {
     }, [])
 
     const [isLogged, setIsLogged] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50)
+        }
+        window.addEventListener("scroll", handleScroll)
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [])
 
     useEffect(() => {
         if (ISINSERVER) return
@@ -60,217 +68,375 @@ const Header = () => {
     useEffect(() => {
         fetchCart()
     }, [fetchCart])
-    console.log(searchInput)
+
+    const navLinks = [
+        { href: "/logistics", label: "Оплата и доставка" },
+        { href: "/#new-collection", label: "Новинки" },
+        { href: "/completed-work", label: "Примеры работ" },
+        { href: "/advice", label: "Советы" },
+        { href: "/galaryworks", label: "Галерея" },
+        { href: "/#aboutref", label: "О нас" },
+    ]
+
+    const cartCount = isAuth ? cartList.length : localCart.length
+    const favCount = isAuth ? favorites.length : localFavorites.length
 
     return (
         <>
-            <div className="hidden w-screen lg:flex lg:flex-row lg:relative lg:justify-between lg:max-w-screen lg:w-[1370px] lg:mx-auto bg-white lg:px-10 lg:mt-8">
-                <ul className="hidden text-[1.2rem] text-blue-600  lg:flex lg:gap-5 lg:justify-between">
-                    <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                        <Link href="/logistics">Оплата и доставка</Link>
-                    </li>
-                    <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                        <Link href="/#new-collection">Новинки в коллекции</Link>
-                    </li>
-                    <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                        <Link href="/completed-work">Примеры работ</Link>
-                    </li>
-                    <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                        <Link href="/advice">Полезные советы</Link>
-                    </li>
-                    <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                        <Link href="/galaryworks">Галерея</Link>
-                    </li>
-
-                    <li className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                        <Link href="/#aboutref">О нас</Link>
-                    </li>
-                </ul>
+            {/* Top bar */}
+            <div className="hidden lg:block bg-gradient-to-r from-slate-900 to-slate-800 text-white py-2">
+                <div className="container-main flex justify-between items-center text-sm">
+                    <div className="flex items-center gap-6">
+                        <Link
+                            href="https://wa.me/79990019494"
+                            target="_blank"
+                            className="flex items-center gap-2 hover:text-red-400 transition-colors"
+                        >
+                            <PhoneCall size={14} />
+                            <span>+7 999 001-94-94</span>
+                        </Link>
+                        <Link
+                            href="https://yandex.ru/maps/20699/urus-martan/?ll=45.557530%2C43.142918&mode=routes&rtext=~43.142918%2C45.557530&rtt=auto&ruri=~&z=17"
+                            target="_blank"
+                            className="flex items-center gap-2 hover:text-red-400 transition-colors"
+                        >
+                            <MapPin size={14} />
+                            <span>г. Урус-Мартан, ул. Нурдина Усамова 34</span>
+                        </Link>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <Link
+                            href="https://www.instagram.com/baza_ars_siti?igsh=cWZ5d2lvOXYzanN1"
+                            target="_blank"
+                            className="hover:text-red-400 transition-colors"
+                        >
+                            <Instagram size={18} />
+                        </Link>
+                    </div>
+                </div>
             </div>
-            <header className="flex flex-col-reverse lg:flex lg:flex-row lg:relative lg:justify-between lg:max-w-screen lg:w-[1370px] lg:h-[240px] lg:mx-auto bg-white lg:px-10 lg:mt-8 z-30">
-                <div className="lg:flex lg:flex-col lg:max-w-[803px] lg:gap-10 lg:relative">
-                    <div className="flex flex-col text-center pb-5 px-4 items-center  h-[250px] lg:px-0 lg:flex-row lg:gap-10 lg:items-center lg:justify-between">
+
+            {/* Main header */}
+            <header
+                className={`sticky top-0 z-100 transition-all duration-300 ${
+                    isScrolled
+                        ? "bg-white/95 backdrop-blur-md shadow-md"
+                        : "bg-white"
+                }`}
+            >
+                <div className="container-main">
+                    {/* Mobile header */}
+                    <div className="flex lg:hidden items-center justify-between py-4 px-4">
+                        <button
+                            onClick={() => setShowMenu(true)}
+                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                            <Menu size={24} />
+                        </button>
+
                         <Link
                             href="/"
-                            className="group text-4xl font-bold flex items-center rounded-2xl p-2"
+                            className="flex items-center gap-1"
                         >
-                            Ars
-                            <Image
-                                className="group-hover:translate-y-[-12px] group-hover:scale-110 transition-all duration-300"
-                                src={logo}
-                                width={80}
-                                height={80}
-                                alt="logo"
-                            />
-                            City
-                        </Link>
-                        <div className="flex flex-col items-center gap-5">
-                            <span className="relative inline-block lg:w-[300px] after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1">
-                                керамическая плитка и керамогранит в Чеченсокй
-                                Республике
+                            <span className="text-2xl font-bold text-slate-800">
+                                Ars
                             </span>
-                            <div className="flex mt-12 lg:mt-0 gap-10 w-[100%] pr-10 lg:pr-0 justify-end lg:justify-center lg:w-0">
-                                <Link
-                                    href={`${
-                                        isLogged ? "/profile" : "/auth/login"
-                                    }`}
-                                >
-                                    <User className="hover:scale-125 duration-150 cursor-pointer" />
-                                </Link>
-                                <Link
-                                    href="/favorites"
-                                    className="relative"
-                                >
-                                    <Heart className="hover:scale-125 duration-150 cursor-pointer" />
-                                    <span className="absolute text-red-500 -top-4 -right-2">
-                                        {isAuth
-                                            ? favorites.length
-                                            : localFavorites.length}
+                            <Image
+                                src={logo}
+                                width={45}
+                                height={45}
+                                alt="logo"
+                                className="transition-transform hover:scale-110"
+                            />
+                            <span className="text-2xl font-bold text-slate-800">
+                                City
+                            </span>
+                        </Link>
+
+                        <div className="flex items-center gap-3">
+                            <Link
+                                href="/favorites"
+                                className="relative p-2"
+                            >
+                                <Heart size={22} />
+                                {favCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                                        {favCount}
                                     </span>
-                                </Link>
-                                <Link
-                                    href="/cart"
-                                    className="relative"
-                                >
-                                    <ShoppingCart className="hover:scale-125 duration-150 cursor-pointer" />
-                                    <span className="absolute text-red-500 -top-4 -right-2">
-                                        {isAuth
-                                            ? cartList.length
-                                            : localCart.length}
+                                )}
+                            </Link>
+                            <Link
+                                href="/cart"
+                                className="relative p-2"
+                            >
+                                <ShoppingCart size={22} />
+                                {cartCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                                        {cartCount}
                                     </span>
-                                </Link>
-                            </div>
+                                )}
+                            </Link>
                         </div>
                     </div>
+
+                    {/* Mobile search */}
+                    <div className="lg:hidden pb-4 px-2">
+                        <div className="relative">
+                            <input
+                                className="input-modern pl-12 pr-4 bg-gray-50 focus:bg-white"
+                                type="text"
+                                placeholder="Поиск в каталоге..."
+                                onChange={(e) => {
+                                    setSearchInput(e.target.value)
+                                    if (e.target.value.length) {
+                                        router.push("/products/search")
+                                    }
+                                }}
+                            />
+                            <Search
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                size={20}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Mobile catalog button */}
                     <div
                         ref={ref}
-                        className="relative"
+                        className="lg:hidden pb-4 px-2"
                     >
-                        <Button
+                        <button
                             onClick={() => setOpen(!open)}
-                            backgroundColor="bg-red-600"
-                            colorText="text-white"
-                            className={`hover:scale-110 px-5 left-5 hidden lg:flex bottom-2 lg:left-5 duration-150 absolute lg:bottom-2 lg:top-[-30px] z-[1000] cursor-pointer`}
-                            text="КАТАЛОГ ПРОДУКЦИИ"
-                            icon={<Menu />}
-                        />
-                        <Button
-                            onClick={() => setOpen(!open)}
-                            backgroundColor="bg-red-600"
-                            colorText="text-white"
-                            className={`hover:scale-110 px-5 left-5 block lg:hidden bottom-2 lg:left-5 duration-150 absolute lg:bottom-2 lg:top-[-30px] z-[1000] cursor-pointer`}
-                            text="КАТАЛОГ"
-                            icon={<Menu />}
-                        />
+                            className="w-full btn-primary flex items-center justify-center gap-3"
+                        >
+                            <Menu size={20} />
+                            <span>КАТАЛОГ ПРОДУКЦИИ</span>
+                        </button>
                         <CatalogModal
                             open={open}
                             setOpen={setOpen}
                         />
                     </div>
-                </div>
-                <div className="flex flex-col bg-[#EEEEEE] pb-5 lg:pb-0 lg:bg-white gap-5 lg:gap-[47px]">
-                    <div className="flex justify-between px-4 pt-5 lg:flex lg:flex-row lg:gap-[83px] lg:items-center">
-                        <div
-                            onClick={() => setShowMenu(true)}
-                            className="lg:hidden cursor-pointer"
-                        >
-                            <MenuIcon />
-                        </div>
-                        <div className="flex flex-col gap-5">
-                            <Link
-                                target="blank"
-                                href="https://wa.me/79990019494"
-                                className="flex flex-row gap-3 relative after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1"
-                            >
-                                <PhoneCall />
-                                +7 999 001-94-94
-                            </Link>
-                            <span className="hidden lg:flex lg:flex-row lg:gap-3 lg:relative after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1 cursor-pointer">
-                                <Link
-                                    target="blank"
-                                    href="https://yandex.ru/maps/20699/urus-martan/?ll=45.557530%2C43.142918&mode=routes&rtext=~43.142918%2C45.557530&rtt=auto&ruri=~&z=17"
-                                >
-                                    г. Урус-Мартан, ул. Нурдина Усамова 34
-                                </Link>
-                            </span>
-                        </div>
 
+                    {/* Desktop header */}
+                    <div className="hidden lg:flex items-center justify-between py-5">
+                        {/* Logo */}
                         <Link
-                            href="https://www.instagram.com/baza_ars_siti?igsh=cWZ5d2lvOXYzanN1"
-                            target="blank"
+                            href="/"
+                            className="group flex items-center gap-1 shrink-0"
                         >
-                            <Instagram />
+                            <span className="text-3xl font-bold text-slate-800 tracking-tight">
+                                Ars
+                            </span>
+                            <Image
+                                src={logo}
+                                width={60}
+                                height={60}
+                                alt="logo"
+                                className="group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-300"
+                            />
+                            <span className="text-3xl font-bold text-slate-800 tracking-tight">
+                                City
+                            </span>
                         </Link>
-                    </div>
-                    <div className="relative px-4 lg:px-0">
-                        <input
-                            className="w-[100%] lg:h-[50px]  text-white placeholder-text-black px-3 py-2 border rounded-[2px] border-gray-300 outline-none bg-red-500 focus:bg-white focus:text-black focus:border-2 focus:scale-105 transition-all delay-150"
-                            type="text"
-                            placeholder="искать в каталоге"
-                            onChange={(e) => {
-                                setSearchInput(e.target.value)
-                                if (e.target.value.length) {
-                                    router.push("/products/search")
-                                }
-                            }}
-                        />
-                        <ArrowRight
-                            onClick={() => setSearchInput(searchInput)}
-                            className="absolute top-[30%] w-[20px] h-[20px] right-6 lg:right-[20px] cursor-pointer"
-                            color="black"
-                        />
-                    </div>
-                </div>
 
-                <div
-                    onClick={() => setShowMenu(false)}
-                    className={`lg:hidden ${
-                        showMenu ? "left-0" : "left-[-100vw]"
-                    } fixed top-0 w-screen h-screen bg-gray-400/50 flex items-start transition-all duration-200 z-[1000]`}
-                >
-                    <ul
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex flex-col items-center w-[50%] pt-10 bg-white h-[100%] gap-5"
-                    >
-                        <li
-                            onClick={() => setShowMenu(false)}
-                            className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1"
+                        {/* Tagline */}
+                        <div className="hidden xl:block max-w-[200px]">
+                            <p className="text-sm text-gray-500 leading-snug">
+                                Керамическая плитка и керамогранит в Чеченской
+                                Республике
+                            </p>
+                        </div>
+
+                        {/* Catalog button */}
+                        <div
+                            ref={ref}
+                            className="relative"
                         >
-                            <Link href="/logistics">Оплата и доставка</Link>
-                        </li>
-                        <li
-                            onClick={() => setShowMenu(false)}
-                            className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1"
-                        >
-                            <Link href="/#new-collection">
-                                Новинки в коллекции
+                            <button
+                                onClick={() => setOpen(!open)}
+                                className="btn-primary flex items-center gap-3 cursor-pointer"
+                            >
+                                <Menu size={20} />
+                                <span>КАТАЛОГ</span>
+                            </button>
+                            <CatalogModal
+                                open={open}
+                                setOpen={setOpen}
+                            />
+                        </div>
+
+                        {/* Search */}
+                        <div className="relative w-[320px]">
+                            <input
+                                className="input-modern pl-12 pr-4 bg-gray-50 focus:bg-white"
+                                type="text"
+                                placeholder="Поиск в каталоге..."
+                                onChange={(e) => {
+                                    setSearchInput(e.target.value)
+                                    if (e.target.value.length) {
+                                        router.push("/products/search")
+                                    }
+                                }}
+                            />
+                            <Search
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                size={20}
+                            />
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-2">
+                            <Link
+                                href={isLogged ? "/profile" : "/auth/login"}
+                                className="flex flex-col items-center gap-1 p-3 rounded-xl hover:bg-gray-100 transition-colors group"
+                            >
+                                <User
+                                    size={22}
+                                    className="text-gray-600 group-hover:text-red-500 transition-colors"
+                                />
+                                <span className="text-xs text-gray-500">
+                                    Профиль
+                                </span>
                             </Link>
-                        </li>
-                        <li
-                            onClick={() => setShowMenu(false)}
-                            className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1"
-                        >
-                            <Link href="/completed-work">Примеры работ</Link>
-                        </li>
-                        <li
-                            onClick={() => setShowMenu(false)}
-                            className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1"
-                        >
-                            <Link href="/advice">Полезные советы</Link>
-                        </li>
-                        <li
-                            onClick={() => setShowMenu(false)}
-                            className="relative inline-block after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1"
-                        >
-                            <Link href="/#aboutref">О нас</Link>
-                        </li>
-                    </ul>
-                    <X
-                        onClick={() => setShowMenu(false)}
-                        className="absolute top-2 left-[42%]"
-                    />
+
+                            <Link
+                                href="/favorites"
+                                className="relative flex flex-col items-center gap-1 p-3 rounded-xl hover:bg-gray-100 transition-colors group"
+                            >
+                                <Heart
+                                    size={22}
+                                    className="text-gray-600 group-hover:text-red-500 transition-colors"
+                                />
+                                <span className="text-xs text-gray-500">
+                                    Избранное
+                                </span>
+                                {favCount > 0 && (
+                                    <span className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                                        {favCount}
+                                    </span>
+                                )}
+                            </Link>
+
+                            <Link
+                                href="/cart"
+                                className="relative flex flex-col items-center gap-1 p-3 rounded-xl hover:bg-gray-100 transition-colors group"
+                            >
+                                <ShoppingCart
+                                    size={22}
+                                    className="text-gray-600 group-hover:text-red-500 transition-colors"
+                                />
+                                <span className="text-xs text-gray-500">
+                                    Корзина
+                                </span>
+                                {cartCount > 0 && (
+                                    <span className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                                        {cartCount}
+                                    </span>
+                                )}
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <nav className="hidden lg:flex items-center gap-8 pb-4 border-t border-gray-100 pt-4">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className="link-underline text-gray-600 hover:text-slate-900 font-medium transition-colors pb-1"
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </nav>
                 </div>
             </header>
+
+            {/* Mobile menu overlay */}
+            <div
+                onClick={() => setShowMenu(false)}
+                className={`lg:hidden fixed max-w-screen inset-0 bg-black/50 backdrop-blur-sm z-[100000] transition-opacity duration-300 ${
+                    showMenu ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
+            >
+                <div
+                    onClick={(e) => e.stopPropagation()}
+                    className={`absolute top-0 left-0 w-[280px] h-full bg-white shadow-2xl transition-transform duration-300 ${
+                        showMenu ? "translate-x-0" : "-translate-x-full"
+                    }`}
+                >
+                    <div className="flex items-center justify-between p-4 border-b">
+                        <Link
+                            href="/"
+                            className="flex items-center gap-1"
+                        >
+                            <span className="text-xl font-bold">Ars</span>
+                            <Image
+                                src={logo}
+                                width={35}
+                                height={35}
+                                alt="logo"
+                            />
+                            <span className="text-xl font-bold">City</span>
+                        </Link>
+                        <button
+                            onClick={() => setShowMenu(false)}
+                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                            <X size={24} />
+                        </button>
+                    </div>
+
+                    <div className="p-4">
+                        <Link
+                            href={isLogged ? "/profile" : "/auth/login"}
+                            onClick={() => setShowMenu(false)}
+                            className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl mb-4"
+                        >
+                            <User
+                                size={20}
+                                className="text-gray-600"
+                            />
+                            <span className="font-medium">
+                                {isLogged ? "Мой профиль" : "Войти"}
+                            </span>
+                        </Link>
+
+                        <nav className="space-y-1">
+                            {navLinks.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    onClick={() => setShowMenu(false)}
+                                    className="block px-4 py-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </nav>
+
+                        <div className="mt-6 pt-6 border-t">
+                            <Link
+                                href="https://wa.me/79990019494"
+                                target="_blank"
+                                className="flex items-center gap-3 text-gray-600 mb-3"
+                            >
+                                <PhoneCall size={18} />
+                                <span>+7 999 001-94-94</span>
+                            </Link>
+                            <Link
+                                href="https://www.instagram.com/baza_ars_siti?igsh=cWZ5d2lvOXYzanN1"
+                                target="_blank"
+                                className="flex items-center gap-3 text-gray-600"
+                            >
+                                <Instagram size={18} />
+                                <span>@baza_ars_siti</span>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

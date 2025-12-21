@@ -1,5 +1,5 @@
 "use client"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import { ArrowLeft, ArrowRight, Flame, TrendingUp } from "lucide-react"
 import React, { useEffect, useRef, useState } from "react"
 import CollectionCard from "./collection-card"
 import Product from "./product-card"
@@ -12,9 +12,7 @@ import config from "@/utils/config"
 const PopularProducts = () => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const refProducts = useRef<HTMLDivElement>(null)
-    const [viewMode, setViewMode] = useState<"collections" | "products">(
-        "collections"
-    )
+    const [viewMode, setViewMode] = useState<"collections" | "products">("collections")
     const [collections, setCollections] = useState<CatalogType[]>([])
     const [tiles, setTiles] = useState<TileTypes[]>([])
     const [totalQuantityProduct, setTotalQuantityProduct] = useState(0)
@@ -78,97 +76,122 @@ const PopularProducts = () => {
     if (tiles.length === 0 && collections.length === 0) return null
 
     return (
-        <div
-            ref={refProducts}
-            className="relative flex flex-col gap-5 w-screen md:max-w-[100vw] lg:w-[1370px] mx-auto px-10 hover:-translate-y-1 transition-all duration-200"
-        >
-            <div className="flex items-center justify-between text-2xl uppercase">
-                <div className="flex text-[0.85rem] lg:text-2xl gap-10 lg:justify-between items-center lg:gap-10">
-                    <h2
-                        style={{
-                            color: viewMode === "collections" ? "red" : "black",
-                        }}
-                        className=' cursor-pointer font-bold relative inline-block after:content-[""] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1'
-                        onClick={() => setViewMode("collections")}
-                    >
-                        Популярные коллеции
-                    </h2>
-                    <h2
-                        style={{
-                            color: viewMode === "products" ? "red" : "black",
-                        }}
-                        className=' cursor-pointer font-bold relative inline-block after:content-[""] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1'
-                        onClick={() => setViewMode("products")}
-                    >
-                        Популярные ТОВАРЫ
-                    </h2>
-                    <Link
-                        href={
-                            viewMode === "collections"
-                                ? "/products/collections"
-                                : "/products/tile"
-                        }
-                        className="-bottom-12 left-8 group flex items-center gap-3"
-                    >
-                        <span className='inline-block after:content-[""] after:absolute after:w-full after:h-[2px] after:bg-red-500 after:scale-x-0 after:left-0 after:bottom-0 after:transition-transform after:origin-left after:duration-300 hover:after:scale-x-100 pb-1'>
-                            {viewMode === "collections"
-                                ? "Все коллекции"
-                                : "Все товары"}
-                        </span>
-                        <div className="hidden lg:flex items-center justify-center w-[30px] h-[30px] rounded-[50%] bg-red-600 text-white group-hover:scale-125 transition-all duration-200">
-                            <ArrowRight size={20} />
-                        </div>
-                    </Link>
-                </div>
-            </div>
+        <section ref={refProducts} className="py-20 bg-white">
+            <div className="container-main">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-10">
+                    <div className="flex items-center gap-3 mb-4">
+                        <Flame className="text-red-500" size={24} />
+                        <h2 className="section-title text-2xl md:text-3xl">
+                            Популярное
+                        </h2>
+                    </div>
 
-            <div className="flex relative items-center gap-5 border-x-2 px-2">
+                    {/* Tabs and link */}
+                    <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+                        {/* Tabs */}
+                        <div className="flex bg-gray-100 rounded-xl p-1">
+                            <button
+                                onClick={() => setViewMode("collections")}
+                                className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 ${
+                                    viewMode === "collections"
+                                        ? "bg-white text-red-600 shadow-sm"
+                                        : "text-gray-600 hover:text-gray-800"
+                                }`}
+                            >
+                                Коллекции
+                            </button>
+                            <button
+                                onClick={() => setViewMode("products")}
+                                className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 ${
+                                    viewMode === "products"
+                                        ? "bg-white text-red-600 shadow-sm"
+                                        : "text-gray-600 hover:text-gray-800"
+                                }`}
+                            >
+                                Товары
+                            </button>
+                        </div>
+
+                        {/* View all link */}
+                        <Link
+                            href={
+                                viewMode === "collections"
+                                    ? "/products/collections"
+                                    : "/products/tile"
+                            }
+                            className="group flex items-center gap-2"
+                        >
+                            <span className="link-underline text-gray-600 font-medium text-sm pb-1">
+                                {viewMode === "collections" ? "Все коллекции" : "Все товары"}
+                            </span>
+                            <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center group-hover:bg-red-600 group-hover:scale-110 transition-all duration-300">
+                                <ArrowRight size={14} className="text-white" />
+                            </div>
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Content */}
                 {viewMode === "collections" ? (
-                    <>
+                    <div className="relative">
+                        {/* Navigation */}
                         <button
                             onClick={scrollLeft}
-                            className="absolute bottom-0 left-[30%] lg:left-0 lg:bottom-0 lg:relative lg:block cursor-pointer hover:scale-[1.1] transition-all delay-100 p-3 bg-red-600 rounded-[50%]"
+                            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-300 hidden lg:flex"
                         >
-                            <ArrowLeft
-                                size={20}
-                                color="#fff"
-                            />
+                            <ArrowLeft size={20} />
                         </button>
+
+                        {/* Slider */}
                         <div
                             ref={scrollRef}
-                            className="flex gap-8 overflow-x-hidden overflow-y-hidden mb-5"
+                            className="flex gap-6 overflow-x-auto scroll-hidden pb-4"
                         >
                             {collections.map((collection) => (
                                 <Link
                                     key={collection.id}
                                     href={`/product/collection/${collection.id}`}
+                                    className="flex-shrink-0"
                                 >
                                     <CollectionCard
-                                        key={collection.id}
                                         country={collection.country}
                                         name={collection.name}
                                         image1={collection.image1}
-                                        number_of_elements={
-                                            collection.number_of_elements
-                                        }
+                                        number_of_elements={collection.number_of_elements}
                                         collection={collection}
                                     />
                                 </Link>
                             ))}
                         </div>
+
                         <button
                             onClick={scrollRight}
-                            className="absolute bottom-0 lg:bottom-0 right-[30%] lg:relative lg:right-0 lg:block cursor-pointer hover:scale-[1.1] transition-all delay-100 p-3 bg-red-600 rounded-[50%]"
+                            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-red-500 shadow-lg flex items-center justify-center text-white hover:bg-red-600 transition-all duration-300 hidden lg:flex"
                         >
-                            <ArrowRight
-                                size={20}
-                                color="#fff"
-                            />
+                            <ArrowRight size={20} />
                         </button>
-                    </>
+
+                        {/* Mobile navigation */}
+                        <div className="flex lg:hidden items-center justify-center gap-3 mt-6">
+                            <button
+                                onClick={scrollLeft}
+                                className="w-10 h-10 rounded-full border-2 border-gray-200 flex items-center justify-center"
+                            >
+                                <ArrowLeft size={18} className="text-gray-600" />
+                            </button>
+                            <button
+                                onClick={scrollRight}
+                                className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center"
+                            >
+                                <ArrowRight size={18} className="text-white" />
+                            </button>
+                        </div>
+                    </div>
                 ) : (
-                    <div className="flex flex-col gap-5">
-                        <div className="flex gap-5 flex-wrap">
+                    <div className="flex flex-col gap-8">
+                        {/* Products grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {tiles.map((tile, index) => (
                                 <Product
                                     key={tile.name}
@@ -183,22 +206,21 @@ const PopularProducts = () => {
                                 />
                             ))}
                         </div>
-                        {totalQuantityProduct > 6 ? (
+
+                        {/* Show more button */}
+                        {totalQuantityProduct > 6 && (
                             <button
-                                onClick={() => showMore()}
-                                className="px-4 py-2 bg-red-500 text-white w-1/2 mx-auto hover:scale-105 transition-all duration-150 cursor-pointer"
+                                onClick={showMore}
+                                className="mx-auto btn-secondary flex items-center gap-2"
                             >
-                                {countData >= totalQuantityProduct
-                                    ? "скрыть"
-                                    : "Показать еще"}
+                                <TrendingUp size={18} />
+                                {countData >= totalQuantityProduct ? "Скрыть" : "Показать ещё"}
                             </button>
-                        ) : (
-                            ""
                         )}
                     </div>
                 )}
             </div>
-        </div>
+        </section>
     )
 }
 

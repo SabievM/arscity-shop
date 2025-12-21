@@ -54,7 +54,7 @@ const ProductsLaminate = () => {
                 показать фильтры
             </button>
 
-            <div className="pr-2 w-[25%] hidden md:block md:max-h-[80vh] md:overflow-y-auto">
+            <div className="pr-2 min-w-[25%] hidden md:block md:max-h-[80vh] md:overflow-y-auto">
                 <FiltersLaminatBlock />
             </div>
 
@@ -76,7 +76,7 @@ const ProductsLaminate = () => {
                 </div>
             </div>
             <div className="flex flex-col gap-4">
-                <h2 className="text-3xl uppercase font-bold w-[100%]">
+                <h2 className="text-3xl uppercase font-bold w-[100%] mb-35 md:mb-5">
                     Ламинат
                 </h2>
                 <div className="flex flex-wrap gap-4">

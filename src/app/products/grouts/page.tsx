@@ -78,7 +78,7 @@ const Grouts = () => {
                 показать фильтры
             </button>
 
-            <div className="pr-2 w-[20%] hidden md:block md:max-h-[80vh] md:overflow-y-auto">
+            <div className="pr-2 md:w-[40%] lg:w-[30%] hidden md:block md:max-h-[80vh] md:overflow-y-auto">
                 <FiltersGrouts
                     handleChange={handleChange}
                     resetFilters={resetFilters}

@@ -39,7 +39,7 @@ const SliderCollections = () => {
 
     const scrollLeft = () => {
         if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: -320, behavior: "smooth" }) // 320px = ширина карточки + отступ
+            scrollRef.current.scrollBy({ left: -320, behavior: "smooth" })
         }
     }
 
@@ -50,55 +50,83 @@ const SliderCollections = () => {
     }
 
     return (
-        <div className="flex flex-col w-screen md:max-w-[100vw] lg:w-[1370px] mx-auto px-4 lg:px-10 py-12 mt-5 overflow-hidden">
-            <h2 className="mx-auto lg:mx-0">КАТАЛОГ БРЕНДОВ</h2>
+        <section className="py-16 bg-white">
+            <div className="container-main">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-10">
+                    <div>
+                        <h2 className="section-title">КАТАЛОГ БРЕНДОВ</h2>
+                        <p className="text-gray-500 mt-3">
+                            Лучшие производители плитки и керамогранита
+                        </p>
+                    </div>
 
-            <div className="flex items-center gap-4">
-                <button
-                    onTouchEnd={scrollLeft}
-                    onClick={scrollLeft}
-                    className="cursor-pointer hover:scale-[1.1] transition-all delay-100 p-3 bg-red-600 rounded-[50%]"
-                >
-                    <ArrowLeft
-                        size={20}
-                        color="#fff"
-                    />
-                </button>
-                <div
-                    className="flex items-center gap-4 overflow-x-hidden scroll-smooth w-full "
-                    ref={scrollRef}
-                >
-                    {brandsMock.map((brand, index) => (
-                        <div
-                            key={index}
-                            className="bg-[#EEEEEE] min-w-[300px] lg:min-w-[300px] h-[200px] flex items-center justify-center rounded-[5px]"
+                    {/* Navigation buttons */}
+                    <div className="hidden md:flex items-center gap-3">
+                        <button
+                            onClick={scrollLeft}
+                            className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 group"
                         >
-                            {brand.imageURL ? (
-                                <Image
-                                    src={brand.imageURL}
-                                    width={100}
-                                    height={100}
-                                    alt="Image"
-                                    className="object-contain"
-                                />
-                            ) : (
-                                <span>{brand.title}</span>
-                            )}
-                        </div>
-                    ))}
+                            <ArrowLeft
+                                size={20}
+                                className="text-gray-600 group-hover:text-white"
+                            />
+                        </button>
+                        <button
+                            onClick={scrollRight}
+                            className="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center hover:bg-red-600 transition-all duration-300"
+                        >
+                            <ArrowRight size={20} className="text-white" />
+                        </button>
+                    </div>
                 </div>
-                <button
-                    onTouchEnd={scrollLeft}
-                    onClick={scrollRight}
-                    className="cursor-pointer hover:scale-[1.1] transition-all delay-100 p-3 bg-red-600 rounded-[50%]"
-                >
-                    <ArrowRight
-                        size={20}
-                        color="#fff"
-                    />
-                </button>
+
+                {/* Brands slider */}
+                <div className="relative">
+                    <div
+                        ref={scrollRef}
+                        className="flex items-center gap-6 overflow-x-auto scroll-hidden pb-4"
+                    >
+                        {brandsMock.map((brand, index) => (
+                            <div
+                                key={index}
+                                className="group flex-shrink-0 w-[200px] h-[140px] bg-gray-50 rounded-2xl flex items-center justify-center p-6 border-2 border-transparent hover:border-red-100 hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer"
+                            >
+                                {brand.imageURL ? (
+                                    <Image
+                                        src={brand.imageURL}
+                                        width={120}
+                                        height={80}
+                                        alt={brand.title}
+                                        className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                                    />
+                                ) : (
+                                    <span className="text-xl font-bold text-gray-400 group-hover:text-gray-700 transition-colors">
+                                        {brand.title}
+                                    </span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Mobile navigation */}
+                    <div className="flex md:hidden items-center justify-center gap-3 mt-6">
+                        <button
+                            onClick={scrollLeft}
+                            className="w-10 h-10 rounded-full border-2 border-gray-200 flex items-center justify-center"
+                        >
+                            <ArrowLeft size={18} className="text-gray-600" />
+                        </button>
+                        <button
+                            onClick={scrollRight}
+                            className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center"
+                        >
+                            <ArrowRight size={18} className="text-white" />
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     )
 }
 
