@@ -25,7 +25,7 @@ const CatalogModal: React.FC<Props> = ({ open, setOpen }) => {
             className={`left-5 md:left-[0px] flex flex-col md:flex-row w-[280px] md:w-[587px] p-[4] absolute ${
                 open
                     ? "opacity-100 visible translate-y-0 pointer-events-auto"
-                    : "opacity-0 invisible -translate-y-4 w-0 overflow-hidden pointer-events-none"
+                    : "opacity-0 invisible -translate-y-4 w-0 overflow-hidden"
             } transition-all duration-300 ease-in-out top-30px md:top-[80px] z-[10000] bg-gray-500 text-white`}
         >
             <div
@@ -46,14 +46,14 @@ const CatalogModal: React.FC<Props> = ({ open, setOpen }) => {
                 </Link>
                 <Link
                     href="/products/tile"
-                    onClick={() => setOpen(false)}
+                    // onClick={() => setOpen(false)}
                     className="cursor-pointer hover:text-red-400 font-bold transition-all delay-100 border-b-2 z-50"
                 >
                     Керамогранит и керамическая плитка
                 </Link>
                 <Link
                     href="/products/grouts/"
-                    onClick={() => setOpen(false)}
+                    // onClick={() => setOpen(false)}
                     className="cursor-pointer hover:text-red-400 font-bold transition-all delay-100 border-b-2"
                 >
                     ЗАМАЗКИ
@@ -62,21 +62,21 @@ const CatalogModal: React.FC<Props> = ({ open, setOpen }) => {
             <div className="flex flex-col w-[50%] p-3 gap-3 uppercase">
                 <Link
                     href="/products/laminate"
-                    onClick={() => setOpen(false)}
+                    // onClick={() => setOpen(false)}
                     className="cursor-pointer hover:text-red-400 font-bold transition-all delay-100 border-b-2"
                 >
                     ЛАМИНАТ
                 </Link>
                 <Link
                     href="/products/skirting-board"
-                    onClick={() => setOpen(false)}
+                    // onClick={() => setOpen(false)}
                     className="cursor-pointer hover:text-red-400 font-bold transition-all delay-100 border-b-2"
                 >
                     ПЛИНТУС
                 </Link>
                 <Link
                     href="/products/underlay"
-                    onClick={() => setOpen(false)}
+                    // onClick={() => setOpen(false)}
                     className="cursor-pointer hover:text-red-400 font-bold transition-all delay-100 border-b-2"
                 >
                     Подложка
