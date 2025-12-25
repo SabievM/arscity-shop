@@ -41,6 +41,7 @@ export type OrdersType = {
 
 const Profile = () => {
     const [auth, setAuth] = useState(false)
+    const [is_superUser, setIsSuperUser] = useState(false)
     const router = useRouter()
     const [orders, setOrders] = useState<OrdersType[]>([])
     const { favorites } = useFavorites()
@@ -65,6 +66,9 @@ const Profile = () => {
                         },
                     }
                 )
+                if (response.data.is_superuser) {
+                    setIsSuperUser(true)
+                }
 
                 if (response.status === 200) {
                     setAuth(true)
@@ -135,6 +139,14 @@ const Profile = () => {
                     <Link href="/favorites">
                         МОИ ИЗБРАННЫЕ ({favorites?.length})
                     </Link>
+                    {is_superUser && (
+                        <Link
+                            href={`${config.BASE_URL}/admin`}
+                            className="border border-solid border-blue-500 px-4 py-2 text-blue-600 text-center hover:bg-red-500 hover:text-white transition-all duration-200"
+                        >
+                            Админ панель
+                        </Link>
+                    )}
                     <div
                         onClick={logOut}
                         className="flex gap-2 items-center cursor-pointer"

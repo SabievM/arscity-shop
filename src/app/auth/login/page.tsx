@@ -31,6 +31,8 @@ const Login = () => {
                         password,
                     }
                 )
+                console.log(response)
+
                 if (!ISSERVER)
                     localStorage.setItem("access_token", response.data.access)
                 await mergeCarts()
