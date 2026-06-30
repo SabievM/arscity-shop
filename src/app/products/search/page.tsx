@@ -20,11 +20,12 @@ export type SearchDataType = {
 const SearchPage = () => {
     const [searchData, setSearchData] = useState<SearchDataType[]>([])
     const { search } = useSearchStore()
+
     useEffect(() => {
         const fetchchData = async () => {
             try {
                 const response = await axios.get(
-                    `${config.BASE_URL}/api/search/?q=${search}`
+                    `${config.BASE_URL}/api/search/?q=${search}`,
                 )
                 setSearchData(response.data)
             } catch (error) {
@@ -41,14 +42,18 @@ const SearchPage = () => {
             <h2 className="mx-auto text-5xl">Результаты поиска</h2>
             <div className="flex flex-wrap gap-5">
                 {searchData?.length > 0
-                    ? searchData.map((item) => (
-                          <div key={item.id}>
+                    ? searchData.map((item, index) => (
+                          <div key={index}>
                               <SearchCard
                                   content_type={item.type}
                                   id={item.id}
                                   name={item.name}
                                   price={item.price}
-                                  image1={item.image1}
+                                  image1={
+                                      item.image1.includes("|")
+                                          ? item.image1.split("|")[1]
+                                          : item.image1
+                                  }
                                   country={item.country}
                                   product={item}
                               />

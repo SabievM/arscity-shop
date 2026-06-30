@@ -16,7 +16,7 @@ const CollectionPage = () => {
     const [typeTiles, setTypeTiles] = useState("all")
     const [collection, setCollection] = useState<CatalogType | null>(null)
     const [tilesForCollection, setTilesForCollection] = useState<TileTypes[]>(
-        []
+        [],
     )
     const [indexCollection, setIndexCollection] = useState(0)
     const { addFavorite, removeFavorite, favorites, localFavorites } =
@@ -32,7 +32,7 @@ const CollectionPage = () => {
         try {
             const fetchData = async () => {
                 const response = await axios.get(
-                    `${config.BASE_URL}/api/tile/collections/${id}/`
+                    `${config.BASE_URL}/api/tile/collections/${id}/`,
                 )
                 setCollection(response.data)
             }
@@ -46,7 +46,7 @@ const CollectionPage = () => {
         if (!collection?.id) return
         const fetchTilesForCollection = async () => {
             const response = await axios.get(
-                `${config.BASE_URL}/api/tile/tiles/?collection=${collection.id}`
+                `${config.BASE_URL}/api/tile/tiles/?collection=${collection.id}`,
             )
             setTilesForCollection(response.data.results)
         }
@@ -57,23 +57,22 @@ const CollectionPage = () => {
         favorites.some(
             (fav) =>
                 fav.object_id === collection?.id &&
-                fav.content_type_display === collection?.type
+                fav.content_type_display === collection?.type,
         ) ||
         localFavorites.some(
             (item) =>
-                item.id === collection?.id && item.type === collection?.type
+                item.id === collection?.id && item.type === collection?.type,
         )
-    console.log(collection)
 
     const handleFavoriteToggle = () => {
         const selectedFavorites = favorites.filter(
             (item) =>
                 item.object_id === collection?.id &&
-                item.content_type_display === collection?.type
+                item.content_type_display === collection?.type,
         )
         const selectedFavoritesLocalStorage = localFavorites.filter(
             (item) =>
-                item.id === collection?.id && item.type === collection?.type
+                item.id === collection?.id && item.type === collection?.type,
         )
 
         if (isInFavorites) {
@@ -86,8 +85,6 @@ const CollectionPage = () => {
             addFavorite(collection)
         }
     }
-
-    console.log(collection)
 
     const scrollLeft = () => {
         if (scrollRef.current) {
@@ -159,7 +156,7 @@ const CollectionPage = () => {
                                                     key={index}
                                                     onClick={() =>
                                                         setIndexCollection(
-                                                            index
+                                                            index,
                                                         )
                                                     }
                                                     className={`relative flex items-center justify-between w-[130px] h-[103px] ${
@@ -282,7 +279,7 @@ const CollectionPage = () => {
                         базовая плитка (
                         {
                             tilesForCollection.filter(
-                                (item) => item.tile_type === "base"
+                                (item) => item.tile_type === "base",
                             ).length
                         }
                         )
@@ -296,7 +293,7 @@ const CollectionPage = () => {
                         Бордюр (
                         {
                             tilesForCollection.filter(
-                                (item) => item.tile_type === "border"
+                                (item) => item.tile_type === "border",
                             ).length
                         }
                         )
@@ -310,7 +307,7 @@ const CollectionPage = () => {
                         напольная плитка (
                         {
                             tilesForCollection.filter(
-                                (item) => item.tile_type === "floor"
+                                (item) => item.tile_type === "floor",
                             ).length
                         }
                         )

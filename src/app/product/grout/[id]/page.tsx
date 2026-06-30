@@ -40,7 +40,7 @@ const Grout = () => {
         try {
             const fetchData = async () => {
                 const response = await axios.get(
-                    `${config.BASE_URL}/api/tile/grouts/${id}`
+                    `${config.BASE_URL}/api/tile/grouts/${id}`,
                 )
                 setGrout(response.data)
             }
@@ -54,33 +54,32 @@ const Grout = () => {
         ? cartList.some(
               (item) =>
                   item.object_id === grout?.id &&
-                  item.content_type_display === grout?.type
+                  item.content_type_display === grout?.type,
           )
         : localCart.some(
               (item) =>
                   item.object_id === grout?.id &&
-                  item.content_type === grout?.type
+                  item.content_type === grout?.type,
           )
 
     const isInFavorites =
         favorites.some(
             (fav) =>
                 fav.object_id === grout?.id &&
-                fav.content_type_display === grout?.type
+                fav.content_type_display === grout?.type,
         ) ||
         localFavorites.some(
-            (item) => item.id === grout?.id && item.type === grout?.type
+            (item) => item.id === grout?.id && item.type === grout?.type,
         )
-    console.log(grout)
 
     const handleFavoriteToggle = () => {
         const selectedFavorites = favorites.filter(
             (item) =>
                 item.object_id === grout?.id &&
-                item.content_type_display === grout?.type
+                item.content_type_display === grout?.type,
         )
         const selectedFavoritesLocalStorage = localFavorites.filter(
-            (item) => item.id === grout?.id && item.type === grout?.type
+            (item) => item.id === grout?.id && item.type === grout?.type,
         )
 
         if (isInFavorites) {
@@ -214,7 +213,7 @@ const Grout = () => {
                                 <button
                                     onClick={() =>
                                         setQuantity((prev) =>
-                                            prev === 1 ? 1 : prev - 1
+                                            prev === 1 ? 1 : prev - 1,
                                         )
                                     }
                                     className="w-15 cursor-pointer bg-white"

@@ -14,7 +14,6 @@ const Favorites = () => {
 
     if (favorites.length === 0 && localFavorites.length === 0)
         return <EmptyFavorites />
-    console.log(favorites)
     return (
         <div className="flex flex-col w-screen md:max-w-screen lg:w-[1370px] mx-auto mt-8 px-12 pt-3 mb-20">
             <h2 className="mx-auto text-2xl md:text-4xl mb-4 md:mb-0">

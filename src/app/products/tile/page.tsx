@@ -9,11 +9,14 @@ import { SceletonCard } from "@/components/shared/skeletons/sceleton"
 import { X } from "lucide-react"
 import { useCartStore } from "../../../../store/CartStore"
 import config from "@/utils/config"
+import Pagination from "@/components/shared/pagination/pagination"
 
 const Products = () => {
     const { filters } = useFilterStore()
     const [tiles, setTiles] = useState<TileTypes[]>([])
     const [filterShow, setFilterShow] = useState(false)
+    const [page, setPage] = useState(1)
+    const [dataCount, setDataCount] = useState(1)
     const fetchCart = useCartStore((state) => state.fetchCart)
 
     useEffect(() => {
@@ -36,18 +39,13 @@ const Products = () => {
         const queryString = query.toString()
         const fethProduct = async () => {
             const { data } = await axios.get(
-                `${config.BASE_URL}/api/tile/tiles/?${queryString}`
+                `${config.BASE_URL}/api/tile/tiles/?${queryString}`,
             )
             setTiles(data.results)
+            setDataCount(data.count)
         }
         fethProduct()
     }, [filters])
-
-    const arr = [100, 200, 300, 400]
-    console.log(arr)
-    for (const num of arr) {
-        console.log(num)
-    }
 
     return (
         <div className="flex gap-5 w-screen md:max-w-screen lg:w-[1370px] mx-auto mt-10 px-12 pt-5">
@@ -103,6 +101,11 @@ const Products = () => {
                               .fill(0)
                               .map((_, index) => <SceletonCard key={index} />)}
                 </div>
+                <Pagination
+                    currentPage={page}
+                    totalPages={Math.ceil(dataCount > 50 ? dataCount / 50 : 1)}
+                    onPageChange={setPage}
+                />
             </div>
         </div>
     )

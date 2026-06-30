@@ -10,12 +10,15 @@ import FiltersLaminatBlock from "@/components/shared/filters-laminate-block"
 import { X } from "lucide-react"
 import { useCartStore } from "../../../../store/CartStore"
 import config from "@/utils/config"
+import Pagination from "@/components/shared/pagination/pagination"
 
 const ProductsLaminate = () => {
     const { filters } = useFilterStore()
     const [laminates, setLaminates] = useState<TileTypes[]>([])
     const [filterShow, setFilterShow] = useState(false)
     const fetchCart = useCartStore((state) => state.fetchCart)
+    const [page, setPage] = useState(1)
+    const [dataCount, setDataCount] = useState(1)
 
     useEffect(() => {
         const query = new URLSearchParams()
@@ -34,12 +37,13 @@ const ProductsLaminate = () => {
         const queryString = query.toString()
         const fethProduct = async () => {
             const { data } = await axios.get(
-                `${config.BASE_URL}/api/laminate/laminates/?${queryString}`
+                `${config.BASE_URL}/api/laminate/laminates/?${queryString}`,
             )
             setLaminates(data.results)
+            setDataCount(data.count)
         }
         fethProduct()
-    }, [filters])
+    }, [filters, page])
 
     useEffect(() => {
         fetchCart()
@@ -98,6 +102,11 @@ const ProductsLaminate = () => {
                               .fill(0)
                               .map((_, index) => <SceletonCard key={index} />)}
                 </div>
+                <Pagination
+                    currentPage={page}
+                    totalPages={Math.ceil(dataCount > 50 ? dataCount / 50 : 1)}
+                    onPageChange={setPage}
+                />
             </div>
         </div>
     )

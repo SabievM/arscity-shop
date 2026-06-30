@@ -38,7 +38,7 @@ const Underlay = () => {
         try {
             const fetchData = async () => {
                 const response = await axios.get(
-                    `${config.BASE_URL}/api/laminate/underlays/${id}`
+                    `${config.BASE_URL}/api/laminate/underlays/${id}`,
                 )
                 setUnderlay(response.data)
             }
@@ -52,33 +52,32 @@ const Underlay = () => {
         ? cartList.some(
               (item) =>
                   item.object_id === underlay?.id &&
-                  item.content_type_display === underlay?.type
+                  item.content_type_display === underlay?.type,
           )
         : localCart.some(
               (item) =>
                   item.object_id === underlay?.id &&
-                  item.content_type === underlay?.type
+                  item.content_type === underlay?.type,
           )
 
     const isInFavorites =
         favorites.some(
             (fav) =>
                 fav.object_id === underlay?.id &&
-                fav.content_type_display === underlay?.type
+                fav.content_type_display === underlay?.type,
         ) ||
         localFavorites.some(
-            (item) => item.id === underlay?.id && item.type === underlay?.type
+            (item) => item.id === underlay?.id && item.type === underlay?.type,
         )
-    console.log(underlay)
 
     const handleFavoriteToggle = () => {
         const selectedFavorites = favorites.filter(
             (item) =>
                 item.object_id === underlay?.id &&
-                item.content_type_display === underlay?.type
+                item.content_type_display === underlay?.type,
         )
         const selectedFavoritesLocalStorage = localFavorites.filter(
-            (item) => item.id === underlay?.id && item.type === underlay?.type
+            (item) => item.id === underlay?.id && item.type === underlay?.type,
         )
 
         if (isInFavorites) {
@@ -213,7 +212,7 @@ const Underlay = () => {
                                 <button
                                     onClick={() =>
                                         setQuantity((prev) =>
-                                            prev === 1 ? 1 : prev - 1
+                                            prev === 1 ? 1 : prev - 1,
                                         )
                                     }
                                     className="w-15 cursor-pointer bg-white"

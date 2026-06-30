@@ -64,7 +64,7 @@ const Profile = () => {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
-                    }
+                    },
                 )
                 if (response.data.is_superuser) {
                     setIsSuperUser(true)
@@ -93,11 +93,11 @@ const Profile = () => {
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
-                                "access_token"
+                                "access_token",
                             )}`,
                             "Content-Type": "application/json",
                         },
-                    }
+                    },
                 )
                 setOrders(response.data)
             } catch (error) {
@@ -159,13 +159,10 @@ const Profile = () => {
                 <div>
                     {orders.length > 0 ? (
                         orders.map((order) => (
-                            <>
-                                <Order
-                                    key={order.id}
-                                    order={order}
-                                />
+                            <div key={order.id}>
+                                <Order order={order} />
                                 <div className="h-[1px] bg-red-500"></div>
-                            </>
+                            </div>
                         ))
                     ) : (
                         <div className="w-screen flex flex-col items-center justify-center md:h-[300px] h-[175px] md:w-[100%] text-2xl md:text-3xl ">

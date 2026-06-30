@@ -76,6 +76,7 @@ const Header = () => {
         { href: "/advice", label: "Советы" },
         { href: "/galaryworks", label: "Галерея" },
         { href: "/#aboutref", label: "О нас" },
+        { href: "/promotion ", label: "Акции и предложения" },
     ]
 
     const cartCount = isAuth ? cartList.length : localCart.length

@@ -68,6 +68,13 @@ const CatalogModal: React.FC<Props> = ({ open, setOpen }) => {
                     ЛАМИНАТ
                 </Link>
                 <Link
+                    href="/products/plumbing-fixtures"
+                    // onClick={() => setOpen(false)}
+                    className="cursor-pointer hover:text-red-400 font-bold transition-all delay-100 border-b-2"
+                >
+                    Сантехника
+                </Link>
+                <Link
                     href="/products/skirting-board"
                     // onClick={() => setOpen(false)}
                     className="cursor-pointer hover:text-red-400 font-bold transition-all delay-100 border-b-2"

@@ -38,7 +38,7 @@ const LaminatePage = () => {
         try {
             const fetchData = async () => {
                 const response = await axios.get(
-                    `${config.BASE_URL}/api/laminate/laminates/${id}`
+                    `${config.BASE_URL}/api/laminate/laminates/${id}`,
                 )
                 setLaminate(response.data)
             }
@@ -52,35 +52,33 @@ const LaminatePage = () => {
         ? cartList.some(
               (item) =>
                   item.object_id === laminate?.id &&
-                  item.content_type_display === laminate?.type
+                  item.content_type_display === laminate?.type,
           )
         : localCart.some(
               (item) =>
                   item.object_id === laminate?.id &&
-                  item.content_type === laminate?.type
+                  item.content_type === laminate?.type,
           )
 
     const isInFavorites =
         favorites.some(
             (fav) =>
                 fav.object_id === laminate?.id &&
-                fav.content_type_display === laminate?.type
+                fav.content_type_display === laminate?.type,
         ) ||
         localFavorites.some(
-            (item) => item.id === laminate?.id && item.type === laminate?.type
+            (item) => item.id === laminate?.id && item.type === laminate?.type,
         )
-    console.log(laminate)
 
     const handleFavoriteToggle = () => {
         const selectedFavorites = favorites.filter(
             (item) =>
                 item.object_id === laminate?.id &&
-                item.content_type_display === laminate?.type
+                item.content_type_display === laminate?.type,
         )
         const selectedFavoritesLocalStorage = localFavorites.filter(
-            (item) => item.id === laminate?.id && item.type === laminate?.type
+            (item) => item.id === laminate?.id && item.type === laminate?.type,
         )
-        console.log(selectedFavoritesLocalStorage)
 
         if (isInFavorites) {
             if (isAuthenticated) {
@@ -229,7 +227,7 @@ const LaminatePage = () => {
                                 <button
                                     onClick={() =>
                                         setQuantity((prev) =>
-                                            prev === 1 ? 1 : prev - 1
+                                            prev === 1 ? 1 : prev - 1,
                                         )
                                     }
                                     className="w-15 cursor-pointer bg-white"

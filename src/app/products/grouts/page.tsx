@@ -7,6 +7,7 @@ import FiltersGrouts from "./_components/filterGrouts"
 import GroutsCard from "@/components/shared/grouts-card"
 import { X } from "lucide-react"
 import config from "@/utils/config"
+import Pagination from "@/components/shared/pagination/pagination"
 
 export type GroutsType = {
     id: number
@@ -27,6 +28,8 @@ const Grouts = () => {
     const fetchCart = useCartStore((state) => state.fetchCart)
     const [selectedGrouts, setSelectedGrouts] = useState<string[]>([])
     const [filterShow, setFilterShow] = useState(false)
+    const [page, setPage] = useState(1)
+    const [dataCount, setDataCount] = useState(1)
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -36,26 +39,21 @@ const Grouts = () => {
                         params: {
                             typematerial: selectedGrouts.join(","),
                         },
-                    }
+                    },
                 )
                 setGrouts(data)
+                setDataCount(data.count)
             } catch (error) {
                 console.log(error)
             }
         }
         fetchData()
-    }, [selectedGrouts])
+    }, [selectedGrouts, page])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(
-            e.target.value,
-            selectedGrouts.includes(e.target.value),
-            selectedGrouts
-        )
-
         if (selectedGrouts.includes(e.target.value)) {
             setSelectedGrouts((prev) =>
-                prev.filter((i) => i !== e.target.value)
+                prev.filter((i) => i !== e.target.value),
             )
         } else {
             setSelectedGrouts((prev) => [...prev, e.target.value])
@@ -107,25 +105,32 @@ const Grouts = () => {
                     />
                 </div>
             </div>
-            <div className="flex flex-wrap gap-5">
-                {grouts?.length > 0
-                    ? grouts.map((grout) => (
-                          <div key={grout.id}>
-                              <GroutsCard
-                                  id={grout.id}
-                                  name={grout.name}
-                                  color={grout.color}
-                                  typematerial={grout.typematerial}
-                                  price={grout.price}
-                                  image1={grout.image1}
-                                  content_type="grout"
-                                  product={grout}
-                              />
-                          </div>
-                      ))
-                    : new Array(6)
-                          .fill(0)
-                          .map((_, index) => <SceletonCard key={index} />)}
+            <div>
+                <div className="flex flex-wrap gap-5">
+                    {grouts?.length > 0
+                        ? grouts.map((grout) => (
+                              <div key={grout.id}>
+                                  <GroutsCard
+                                      id={grout.id}
+                                      name={grout.name}
+                                      color={grout.color}
+                                      typematerial={grout.typematerial}
+                                      price={grout.price}
+                                      image1={grout.image1}
+                                      content_type="grout"
+                                      product={grout}
+                                  />
+                              </div>
+                          ))
+                        : new Array(6)
+                              .fill(0)
+                              .map((_, index) => <SceletonCard key={index} />)}
+                </div>
+                <Pagination
+                    currentPage={page}
+                    totalPages={Math.ceil(dataCount > 50 ? dataCount / 50 : 1)}
+                    onPageChange={setPage}
+                />
             </div>
         </div>
     )

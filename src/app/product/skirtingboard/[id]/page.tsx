@@ -38,7 +38,7 @@ const Skirtingboard = () => {
         try {
             const fetchData = async () => {
                 const response = await axios.get(
-                    `${config.BASE_URL}/api/laminate/skirting-boards/${id}`
+                    `${config.BASE_URL}/api/laminate/skirting-boards/${id}`,
                 )
                 setScirtingboard(response.data)
             }
@@ -52,37 +52,36 @@ const Skirtingboard = () => {
         ? cartList.some(
               (item) =>
                   item.object_id === scirtingboard?.id &&
-                  item.content_type_display === scirtingboard?.type
+                  item.content_type_display === scirtingboard?.type,
           )
         : localCart.some(
               (item) =>
                   item.object_id === scirtingboard?.id &&
-                  item.content_type === scirtingboard?.type
+                  item.content_type === scirtingboard?.type,
           )
 
     const isInFavorites =
         favorites.some(
             (fav) =>
                 fav.object_id === scirtingboard?.id &&
-                fav.content_type_display === scirtingboard?.type
+                fav.content_type_display === scirtingboard?.type,
         ) ||
         localFavorites.some(
             (item) =>
                 item.id === scirtingboard?.id &&
-                item.type === scirtingboard?.type
+                item.type === scirtingboard?.type,
         )
-    console.log(scirtingboard)
 
     const handleFavoriteToggle = () => {
         const selectedFavorites = favorites.filter(
             (item) =>
                 item.object_id === scirtingboard?.id &&
-                item.content_type_display === scirtingboard?.type
+                item.content_type_display === scirtingboard?.type,
         )
         const selectedFavoritesLocalStorage = localFavorites.filter(
             (item) =>
                 item.id === scirtingboard?.id &&
-                item.type === scirtingboard?.type
+                item.type === scirtingboard?.type,
         )
 
         if (isInFavorites) {
@@ -102,7 +101,7 @@ const Skirtingboard = () => {
                 scirtingboard.type,
                 scirtingboard.id,
                 quantity,
-                scirtingboard
+                scirtingboard,
             )
         }
     }
@@ -182,7 +181,7 @@ const Skirtingboard = () => {
                                                     key={index}
                                                     onClick={() =>
                                                         setIndexScirtingboard(
-                                                            index
+                                                            index,
                                                         )
                                                     }
                                                     className={`relative flex items-center justify-between w-[130px] h-[103px] cursor-pointer${
@@ -225,7 +224,7 @@ const Skirtingboard = () => {
                                 <button
                                     onClick={() =>
                                         setQuantity((prev) =>
-                                            prev === 1 ? 1 : prev - 1
+                                            prev === 1 ? 1 : prev - 1,
                                         )
                                     }
                                     className="w-15 cursor-pointer bg-white"

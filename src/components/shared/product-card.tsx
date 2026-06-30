@@ -9,7 +9,7 @@ import { useMemo } from "react"
 
 export type TileCardFields = {
     id: number
-    city: TileFields
+    city?: TileFields
     imageURL?: string
     title: string
     price: number
@@ -40,31 +40,31 @@ const Product: React.FC<TileCardFields> = ({
         ? cartList.some(
               (item) =>
                   item.object_id === id &&
-                  item.content_type_display === content_type
+                  item.content_type_display === content_type,
           )
         : localCart.some(
               (item) =>
-                  item.object_id === id && item.content_type === content_type
+                  item.object_id === id && item.content_type === content_type,
           )
 
     const isInFavorites =
         favorites.some(
             (fav) =>
                 fav.object_id === id &&
-                fav.content_type_display === content_type
+                fav.content_type_display === content_type,
         ) ||
         localFavorites.some(
-            (item) => item.id === id && item.type === content_type
+            (item) => item.id === id && item.type === content_type,
         )
 
     const handleFavoriteToggle = () => {
         const selectedFavorites = favorites.filter(
             (item) =>
                 item.object_id === id &&
-                item.content_type_display === content_type
+                item.content_type_display === content_type,
         )
         const selectedFavoritesLocalStorage = localFavorites.filter(
-            (item) => item.id === id && item.type === content_type
+            (item) => item.id === id && item.type === content_type,
         )
 
         if (isInFavorites) {
@@ -124,7 +124,7 @@ const Product: React.FC<TileCardFields> = ({
                 <div className="absolute bottom-4 left-4">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-gray-700">
                         <MapPin size={12} />
-                        {city.name}
+                        {city?.name}
                     </span>
                 </div>
             </div>

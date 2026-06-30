@@ -24,80 +24,71 @@ const SearchCard: React.FC<Props> = ({
     id,
     name,
     price,
-    image1,
     product,
 }) => {
-    const img = `${config.BASE_URL}${image1}`
-    const { addToCart, cartList, localCart } = useCartStore()
-    const { addFavorite, removeFavorite, favorites, localFavorites } =
+    const { favorites, localFavorites, removeFavorite, addFavorite } =
         useFavorites()
+    const { addToCart, cartList, localCart } = useCartStore()
+
+    const isFavorites =
+        favorites.some(
+            (fav) =>
+                fav.name === name &&
+                fav.content_type_display.toLowerCase() ===
+                    content_type.toLowerCase(),
+        ) ||
+        localFavorites.some(
+            (item) =>
+                item.id === id &&
+                item.type.toLowerCase() === content_type.toLowerCase(),
+        )
+
     const ISSERVER = typeof window === "undefined"
     const isAuthenticated = useMemo(() => {
         if (ISSERVER) return
         return !!localStorage.getItem("access_token")
     }, [])
+    const image = product?.image1?.split("|")[0]
 
-    const isInCart = isAuthenticated
-        ? cartList.some(
-              (item) =>
-                  item.object_id === id &&
-                  item.content_type_display === content_type
-          )
-        : localCart.some(
-              (item) =>
-                  item.object_id === id && item.content_type === content_type
-          )
+    const img = image?.startsWith("http") ? image : `${config.BASE_URL}${image}`
 
-    const isInFavorites =
-        favorites.some(
-            (fav) =>
-                fav.object_id === id &&
-                fav.content_type_display === content_type
-        ) ||
-        localFavorites.some(
-            (item) => item.id === id && item.type === content_type
-        )
-
-    const handleFavoriteToggle = () => {
-        const selectedFavorites = favorites.filter(
+    const isInCart =
+        cartList.some(
             (item) =>
-                item.object_id === id &&
-                item.content_type_display === content_type
-        )
-        const selectedFavoritesLocalStorage = localFavorites.filter(
-            (item) => item.id === id && item.type === content_type
-        )
+                item.product.id === product.id &&
+                item.content_type_display === content_type,
+        ) && isAuthenticated
 
-        if (isInFavorites) {
-            if (isAuthenticated) {
-                removeFavorite(selectedFavorites[0])
-            } else {
-                removeFavorite(selectedFavoritesLocalStorage[0])
-            }
-        } else {
+    const isInLocalCart = localCart.some(
+        (item) =>
+            item.product.name === name &&
+            item.content_type_display.toLowerCase() ===
+                content_type.toLowerCase(),
+    )
+
+    const handleFAvorites = () => {
+        if (isFavorites) {
+            removeFavorite(product)
+        } else if (!isFavorites) {
             addFavorite(product)
         }
     }
-    console.log(image1)
 
     const handleAddToCart = async () => {
-        if (!isInCart) {
-            await addToCart(content_type, id, 1, {
-                id,
-                name: name,
-                image1: image1,
-                price,
-            })
+        if (!isInCart && isAuthenticated) {
+            await addToCart(content_type, product.id, 1, product)
+        } else if (!isInLocalCart && !isAuthenticated) {
+            await addToCart(content_type, product.id, 1, product)
         }
     }
     return (
         <div className="max-w-[300px] min-w-[300px] max-h-[550px] min-h-[550px] flex flex-col justify-between pb-4 gap-[20px] px-3 cursor-pointer custom-shadow">
             <div className="flex items-center justify-end pt-2">
                 <Heart
-                    onClick={handleFavoriteToggle}
+                    onClick={handleFAvorites}
                     className="cursor-pointer"
-                    color={isInFavorites ? "red" : "black"}
-                    fill={isInFavorites ? "red" : "transparent"}
+                    color={isFavorites ? "red" : "black"}
+                    fill={isFavorites ? "red" : "transparent"}
                 />
             </div>
             <div className="overflow-hidden min-h-[200px] flex items-center">
@@ -113,7 +104,7 @@ const SearchCard: React.FC<Props> = ({
                 href={`/product/${content_type}/${id}`}
                 className="text-[1.3rem]"
             >
-                {name}
+                {name.length > 40 ? name.slice(0, 40) + "..." : name}
             </Link>
             <Link
                 target="blank"

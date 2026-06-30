@@ -205,7 +205,7 @@ const Footer = () => {
                         onClick={() =>
                             window.scrollTo({ top: 0, behavior: "smooth" })
                         }
-                        className="w-12 h-12 rounded-xl bg-red-500 hover:bg-red-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
+                        className="w-12 h-12 rounded-xl bg-red-500 hover:bg-red-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 sticky top-0 right-0"
                     >
                         <ArrowUp size={20} />
                     </button>

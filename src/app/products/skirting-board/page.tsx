@@ -7,6 +7,7 @@ import ProductSkirtingBoard from "@/components/shared/product-card-skirtingboard
 import FiltersSkirtingBoard from "./_components/filtersSkirtingBoard"
 import { X } from "lucide-react"
 import config from "@/utils/config"
+import Pagination from "@/components/shared/pagination/pagination"
 
 export type SkirtingBoardTYpe = {
     id: number
@@ -28,12 +29,14 @@ export type SkirtingBoardTYpe = {
 
 const SkirtingBoard = () => {
     const [skirtingBoards, setSkirtingBoards] = useState<SkirtingBoardTYpe[]>(
-        []
+        [],
     )
     const [selectedSkirtingBoards, setSelectedSkirtingBoards] = useState<
         string[]
     >([])
     const [filterShow, setFilterShow] = useState(false)
+    const [page, setPage] = useState(1)
+    const [dataCount, setDataCount] = useState(1)
 
     useEffect(() => {
         const fethProduct = async () => {
@@ -43,17 +46,18 @@ const SkirtingBoard = () => {
                     params: {
                         typematerial: selectedSkirtingBoards.join(","),
                     },
-                }
+                },
             )
             setSkirtingBoards(data)
+            setDataCount(data.count)
         }
         fethProduct()
-    }, [selectedSkirtingBoards])
+    }, [selectedSkirtingBoards, page])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (selectedSkirtingBoards.includes(e.target.value)) {
             setSelectedSkirtingBoards((prev) =>
-                prev.filter((i) => i !== e.target.value)
+                prev.filter((i) => i !== e.target.value),
             )
         } else {
             setSelectedSkirtingBoards((prev) => [...prev, e.target.value])
@@ -62,7 +66,6 @@ const SkirtingBoard = () => {
     const resetFilters = () => {
         setSelectedSkirtingBoards([])
     }
-    console.log(skirtingBoards)
 
     return (
         <div className="flex gap-5 md:max-w-screen lg:w-[1370px] mx-auto mt-10 px-12 pt-5">
@@ -102,31 +105,37 @@ const SkirtingBoard = () => {
                     />
                 </div>
             </div>
-            {/* <FiltersSkirtingBoard handleChange={handleChange} resetFilters={resetFilters} selectedSkirtingBoards={selectedSkirtingBoards}/> */}
-            <div className="flex flex-wrap gap-5">
-                {skirtingBoards?.length > 0
-                    ? skirtingBoards.map((skirtingBoard) => (
-                          <div key={skirtingBoard.id}>
-                              <ProductSkirtingBoard
-                                  id={skirtingBoard.id}
-                                  name={skirtingBoard.name}
-                                  typematerial={skirtingBoard.typematerial}
-                                  price={skirtingBoard.price}
-                                  thickness={skirtingBoard.thickness}
-                                  height={skirtingBoard.height}
-                                  moisture_resistance={
-                                      skirtingBoard.moisture_resistance
-                                  }
-                                  tone={skirtingBoard.tone}
-                                  image1={skirtingBoard.image1}
-                                  content_type="skirtingboard"
-                                  product={skirtingBoard}
-                              />
-                          </div>
-                      ))
-                    : new Array(6)
-                          .fill(0)
-                          .map((_, index) => <SceletonCard key={index} />)}
+            <div>
+                <div className="flex flex-wrap gap-5">
+                    {skirtingBoards?.length > 0
+                        ? skirtingBoards.map((skirtingBoard) => (
+                              <div key={skirtingBoard.id}>
+                                  <ProductSkirtingBoard
+                                      id={skirtingBoard.id}
+                                      name={skirtingBoard.name}
+                                      typematerial={skirtingBoard.typematerial}
+                                      price={skirtingBoard.price}
+                                      thickness={skirtingBoard.thickness}
+                                      height={skirtingBoard.height}
+                                      moisture_resistance={
+                                          skirtingBoard.moisture_resistance
+                                      }
+                                      tone={skirtingBoard.tone}
+                                      image1={skirtingBoard.image1}
+                                      content_type="skirtingboard"
+                                      product={skirtingBoard}
+                                  />
+                              </div>
+                          ))
+                        : new Array(6)
+                              .fill(0)
+                              .map((_, index) => <SceletonCard key={index} />)}
+                </div>
+                <Pagination
+                    currentPage={page}
+                    totalPages={Math.ceil(dataCount > 50 ? dataCount / 50 : 1)}
+                    onPageChange={setPage}
+                />
             </div>
         </div>
     )

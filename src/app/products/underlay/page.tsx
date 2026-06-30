@@ -5,6 +5,7 @@ import { SceletonCard } from "@/components/shared/skeletons/sceleton"
 import ProductUnderlay from "@/components/shared/product-card-underlays"
 import { useCartStore } from "../../../../store/CartStore"
 import config from "@/utils/config"
+import Pagination from "@/components/shared/pagination/pagination"
 
 export type UnderlayType = {
     id: number
@@ -23,14 +24,17 @@ export type UnderlayType = {
 
 const Underlay = () => {
     const [underlays, setUnderlays] = useState<UnderlayType[]>([])
+    const [page, setPage] = useState(1)
+    const [dataCount, setDataCount] = useState(1)
     const fetchCart = useCartStore((state) => state.fetchCart)
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const { data } = await axios.get(
-                    `${config.BASE_URL}/api/laminate/underlays/`
+                    `${config.BASE_URL}/api/laminate/underlays/`,
                 )
                 setUnderlays(data)
+                setDataCount(data.count)
             } catch (error) {
                 console.log(error)
             }
@@ -66,6 +70,11 @@ const Underlay = () => {
                           .fill(0)
                           .map((_, index) => <SceletonCard key={index} />)}
             </div>
+            <Pagination
+                currentPage={page}
+                totalPages={Math.ceil(dataCount > 50 ? dataCount / 50 : 1)}
+                onPageChange={setPage}
+            />
         </div>
     )
 }
