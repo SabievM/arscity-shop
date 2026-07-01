@@ -53,7 +53,10 @@ const Products = () => {
 
     return (
         <div className="flex gap-5 w-screen md:max-w-screen lg:w-[1370px] mx-auto mt-10 px-12 pt-5">
-            <button className="absolute md:hidden top-98 left-12 border px-5 py-2 bg-red-600 text-white rounded-xl">
+            <button
+                onClick={() => setFilterShow(true)}
+                className="absolute md:hidden top-98 left-12 border px-5 py-2 bg-red-600 text-white rounded-xl"
+            >
                 показать фильтры
             </button>
 

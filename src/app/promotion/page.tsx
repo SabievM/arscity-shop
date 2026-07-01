@@ -43,7 +43,7 @@ const Products = () => {
                     </p>
                 </div>
                 <div className="w-full flex flex-col items-center justify-center py-8 bg-blue-50">
-                    <div className="flex flex-col gap-4 w-full md:w-1/2">
+                    <div className="flex flex-col gap-4 w-full md:w-1/2 px-4">
                         <label
                             className="text-2xl"
                             htmlFor="mailInput"

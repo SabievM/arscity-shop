@@ -156,7 +156,7 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className="w-full h-[1px] bg-red-400 mb-10"></div>
-                <div>
+                <div className="px-4">
                     {orders.length > 0 ? (
                         orders.map((order) => (
                             <div key={order.id}>
