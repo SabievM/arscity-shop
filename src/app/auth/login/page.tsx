@@ -29,9 +29,8 @@ const Login = () => {
                     {
                         email,
                         password,
-                    }
+                    },
                 )
-                console.log(response)
 
                 if (!ISSERVER)
                     localStorage.setItem("access_token", response.data.access)
@@ -49,7 +48,7 @@ const Login = () => {
                 setIsLoading(false)
             }
         },
-        []
+        [],
     )
 
     return (
