@@ -81,6 +81,12 @@ const SearchCard: React.FC<Props> = ({
             await addToCart(content_type, product.id, 1, product)
         }
     }
+
+    const category_type =
+        content_type.toLowerCase() === "showerassembly"
+            ? "plumbingfixture"
+            : content_type
+
     return (
         <div className="max-w-[300px] min-w-[300px] max-h-[550px] min-h-[550px] flex flex-col justify-between pb-4 gap-[20px] px-3 cursor-pointer custom-shadow">
             <div className="flex items-center justify-end pt-2">
@@ -101,7 +107,7 @@ const SearchCard: React.FC<Props> = ({
             </div>
 
             <Link
-                href={`/product/${content_type}/${id}`}
+                href={`/product/${category_type}/${id}`}
                 className="text-[1.3rem]"
             >
                 {name.length > 40 ? name.slice(0, 40) + "..." : name}
