@@ -1,10 +1,16 @@
 "use client"
+import Loader from "@/components/shared/loader"
 import config from "@/utils/config"
 import axios from "axios"
 import { Lock, LockOpen, MoveRight } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import toast, { Toaster } from "react-hot-toast"
+
+const success = () => toast.success("Регистрация прошла успешно!")
+const messageError = () =>
+    toast.error("Ошибка при регистрации, повторите попытку")
 
 const Register = () => {
     const router = useRouter()
@@ -14,20 +20,41 @@ const Register = () => {
     const [re_password, setRePassword] = useState("")
     const [isLockOpen, setIsLockOpen] = useState(false)
 
+    const [lodaing, setLoading] = useState(false)
+    const isActive = Boolean(
+        username.length >= 3 &&
+        email &&
+        password &&
+        re_password &&
+        password === re_password,
+    )
+
     const registrationFunction = async (e: React.FormEvent) => {
         e.preventDefault()
+        setLoading(true)
         try {
-            await axios.post(`${config.BASE_URL}/api/auth/users/`, {
-                username: username,
-                email: email,
-                password: password,
-                re_password: re_password,
-            })
-            alert("Регистрация прошла успешно")
-            router.push("/auth/login")
+            const response = await axios.post(
+                `${config.BASE_URL}/api/auth/users/`,
+                {
+                    username: username,
+                    email: email,
+                    password: password,
+                    re_password: re_password,
+                },
+            )
+
+            if (response.status == 201) {
+                setLoading(false)
+                success()
+                setTimeout(() => {
+                    router.push("/auth/login")
+                }, 2000)
+            }
         } catch (error) {
             console.log(error)
-            alert("Ошибка регистрации")
+            messageError()
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -39,11 +66,14 @@ const Register = () => {
                 <span>Регистрация</span>
             </div>
             <h2 className="text-3xl">Регистрация</h2>
-            <div className="flex flex-col w-[100%] gap-5 md:w-1/2 mx-auto p-4 shadow-md bg-cyan-50-100">
+            <div
+                className={`${lodaing ? "hidden" : "flex"} flex-col w-[100%] gap-5 md:w-1/2 mx-auto p-4 shadow-md bg-cyan-50-100`}
+            >
                 <span>
                     Поля, отмеченные *, обязательны для заполнения.Пароль должен
                     быть не менее 6 символов длиной.
                 </span>
+
                 <form
                     onSubmit={registrationFunction}
                     action=""
@@ -140,10 +170,15 @@ const Register = () => {
                         <input type="checkbox" />
                         <label htmlFor="">
                             Отправляя данные, я принимаю условия{" "}
-                            <Link href="">«Пользовательского соглашения».</Link>{" "}
+                            <Link href="">
+                                «Пользовательского соглашения».
+                            </Link>{" "}
                         </label>
                     </div>
-                    <button className=" py-3 bg-red-500 text-white font-bold uppercase hover:scale-[1.03] transition-all duration-200">
+                    <button
+                        disabled={!isActive}
+                        className={`${isActive ? "bg-red-500 text-white" : "bg-gray-200 text-gray-600"} py-3   font-bold uppercase hover:scale-[1.03] transition-all duration-200`}
+                    >
                         Зарегистрироваться
                     </button>
                     <span>
@@ -157,6 +192,29 @@ const Register = () => {
                     </span>
                 </form>
             </div>
+            <Loader loading={lodaing} />
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                toasterId="default"
+                toastOptions={{
+                    success: {
+                        style: {
+                            background: "rgb(0,190,0)",
+                            color: "white",
+                        },
+                    },
+                    error: {
+                        style: {
+                            background: "rgb(90,0,0)",
+                            color: "white",
+                        },
+                    },
+                }}
+            />
         </div>
     )
 }
