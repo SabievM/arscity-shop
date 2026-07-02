@@ -5,7 +5,7 @@ import axios from "axios"
 import { Lock, LockOpen, MoveRight } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
 
 const success = () => toast.success("Регистрация прошла успешно!")
