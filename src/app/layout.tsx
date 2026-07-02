@@ -19,18 +19,58 @@ const robotoSans = Roboto({
 })
 
 export const metadata: Metadata = {
-    title: "ArsCity - Керамическая плитка и керамогранит",
+    metadataBase: new URL("https://ars-city.ru"),
+
+    title: {
+        default: "ArsCity — Керамическая плитка и керамогранит, сантехника",
+        template: "%s | ArsCity",
+    },
+
     description:
-        "Интернет-магазин керамической плитки и керамогранита в Чеченской Республике. Более 570 коллекций от лучших производителей.",
+        "Интернет-магазин керамической плитки, керамогранита, ламината и сантехники в Чеченской Республике. Более 570 коллекций.",
+
     keywords: [
-        "плитка",
-        "керамогранит",
         "керамическая плитка",
+        "керамогранит",
         "ламинат",
+        "плитка",
+        "сантехника",
         "Чечня",
+        "Грозный",
         "Урус-Мартан",
-        "ArsCity",
     ],
+
+    robots: {
+        index: true,
+        follow: true,
+    },
+
+    alternates: {
+        canonical: "/",
+    },
+
+    openGraph: {
+        title: "ArsCity",
+        description: "Интернет-магазин плитки, керамогранита, сантехники",
+        url: "https://ars-city.ru",
+        siteName: "ArsCity",
+        locale: "ru_RU",
+        type: "website",
+        images: [
+            {
+                url: "/og-image.jpg",
+                width: 1200,
+                height: 630,
+            },
+        ],
+    },
+
+    twitter: {
+        card: "summary_large_image",
+        title: "ArsCity",
+        description: "Интернет-магазин плитки",
+        images: ["/og-image.jpg"],
+    },
 }
 
 export default function RootLayout({
