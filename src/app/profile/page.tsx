@@ -100,6 +100,7 @@ const Profile = () => {
                     },
                 )
                 setOrders(response.data)
+                console.log(orders)
             } catch (error) {
                 console.log(error)
             }
@@ -114,6 +115,7 @@ const Profile = () => {
         resetCart()
         router.push("/")
     }, [])
+    console.log(orders)
 
     if (!auth) return <div>Loadig...</div>
 

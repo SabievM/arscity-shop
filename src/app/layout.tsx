@@ -93,6 +93,25 @@ export default function RootLayout({
                     src={`https://api-maps.yandex.ru/2.1/?apikey=${process.env.NEXT_PUBLIC_YMAPS_KEY}&lang=ru_RU`}
                     strategy="afterInteractive"
                 />
+                {/* <Script
+                    src="https://elfsightcdn.com/platform.js"
+                    strategy="lazyOnload"
+                />
+
+                <div
+                    className="elfsight-app-4d106290-de79-446a-9475-0244b0b0f0a8"
+                    data-elfsight-app-lazy
+                /> */}
+                {/* <script
+                    src="//code.jivo.ru/widget/xT3ZShHePZ"
+                    async
+                ></script> */}
+                {/* <script>
+                window.replainSettings = { id:'031a33ea-7f94-4b38-9b5d-f084e792ab70' };
+                (function(u){var s=document.createElement('script');s.async=true;s.src=u;
+                var x=document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);
+                })('https://widget.replain.cc/dist/client.js');
+                </script> */}
             </body>
         </html>
     )
